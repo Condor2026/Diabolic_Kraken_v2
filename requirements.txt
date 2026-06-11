@@ -1,1 +1,23 @@
+# ============================================
+# KELTIC KRAKEN v3.0 - DEPENDENCIAS
+# Ireland Crime Intelligence Platform
+# ============================================
 
+# HTTP requests y scraping
+requests==2.31.0
+beautifulsoup4==4.12.3
+lxml==5.1.0
+urllib3==2.2.1
+
+# Web framework
+flask==3.0.3
+
+# Utilidades
+python-dotenv==1.0.1
+
+# Opcional: mejora de rendimiento
+# aiohttp==3.9.5  # Descomentar para async (futuro)
+
+# ============================================
+# Instalación: pip install -r requirements.txt
+# ============================================
