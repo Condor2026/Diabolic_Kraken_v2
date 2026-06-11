@@ -1,0 +1,20 @@
+# ============================================
+# KELTIC KRAKEN v3.0 - Docker Compose
+# Ireland Crime Intelligence Platform
+# ============================================
+
+version: '3.8'
+
+services:
+  keltic-kraken:
+    build: .
+    container_name: keltic-kraken
+    ports:
+      - "5014:5014"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    stdin_open: true
+    tty: true
