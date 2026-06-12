@@ -710,7 +710,7 @@ FUENTES_BASE = [
     {'nombre': 'Newry Reporter', 'url': 'https://www.newryreporter.com/news/crime/', 'base': 'https://www.newryreporter.com', 'condado': 'Down', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - TYRONE ===
-    {'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},
+    #{'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - ARMAGH ===
     {'nombre': 'Armagh I', 'url': 'https://armaghi.com/category/crime/', 'base': 'https://armaghi.com', 'condado': 'Armagh', 'categoria': 'ni'},
