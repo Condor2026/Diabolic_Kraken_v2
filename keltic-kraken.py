@@ -49,7 +49,7 @@ IDIOMA_ACTUAL = None
 def mostrar_banner_idioma():
     print(f"""
 {Color.CYAN}╔════════════════════════════════════════════════════════════════════╗
-║                                                                    ║
+║                                                                        ║
 ║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE         ║
 ║                                                                    ║
 ║   "Vigilamos para proteger, no para señalar. Datos públicos,      ║
@@ -256,10 +256,10 @@ def cprint(texto, color=None, bold=False, dim=False, italic=False, underline=Fal
 
 VERSION = "3.0"
 PUERTO = 5014
-ARCHIVO_DATOS = 'keltic-kraken_ireland.json'
+ARCHIVO_DATOS = 'keltic_kraken_ireland.json'
 ARCHIVO_CACHE = 'url_cache_ireland.json'
 ARCHIVO_ESTADO = 'estado_fuentes_ireland.json'
-ARCHIVO_BACKUP = 'keltic-kraken_backup.json'
+ARCHIVO_BACKUP = 'keltic_kraken_backup.json'
 PAGINAS_BUSQUEDA = 5
 TIMEOUT = 25
 MAX_INTENTOS = 3
