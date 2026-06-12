@@ -639,7 +639,7 @@ pip install certifi
 crontab -e
 
 # Añadir línea (ejecuta a las 8 AM)
-0 8 * * * cd /ruta/keltic-kraken && python3 keltic_kraken.py -auto
+0 8 * * * cd /ruta/keltic-kraken && python3 keltic-kraken.py -auto
 ```
 
 **Windows (Programador de tareas):**
@@ -682,7 +682,7 @@ El sistema está diseñado para Irlanda, pero puede adaptarse:
 
 ### ❓ ¿Dónde se guardan los datos?
 
-En `keltic_kraken_ireland.json` (formato JSON legible)
+En `keltic-kraken_ireland.json` (formato JSON legible)
 
 ### ❓ ¿Puedo exportar los datos?
 
