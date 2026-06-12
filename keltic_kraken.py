@@ -260,9 +260,9 @@ ARCHIVO_DATOS = 'keltic_kraken_ireland.json'
 ARCHIVO_CACHE = 'url_cache_ireland.json'
 ARCHIVO_ESTADO = 'estado_fuentes_ireland.json'
 ARCHIVO_BACKUP = 'keltic_kraken_backup.json'
-PAGINAS_BUSQUEDA = 5
-TIMEOUT = 25
-MAX_INTENTOS = 3
+PAGINAS_BUSQUEDA = 6
+TIMEOUT = 20
+MAX_INTENTOS = 2
 DELAY_MIN = 0.8
 DELAY_MAX = 2.0
 
@@ -611,7 +611,6 @@ FUENTES_BASE = [
     # === CORK REGION ===
     {'nombre': 'Cork Beo', 'url': 'https://www.corkbeo.ie/news/cork-crime/', 'base': 'https://www.corkbeo.ie', 'condado': 'Cork', 'categoria': 'local'},
     {'nombre': 'Cork Independent', 'url': 'https://corkindependent.com/category/crime/', 'base': 'https://corkindependent.com', 'condado': 'Cork', 'categoria': 'local'},
-    {'nombre': 'The Corkman', 'url': 'https://www.thecorkman.ie/news/crime/', 'base': 'https://www.thecorkman.ie', 'condado': 'Cork', 'categoria': 'local'},
     {'nombre': 'Cork News', 'url': 'https://www.corknews.ie/crime/', 'base': 'https://www.corknews.ie', 'condado': 'Cork', 'categoria': 'local'},
     {'nombre': 'Cork Safety Alert', 'url': 'https://corksafetyalert.com/category/crime/', 'base': 'https://corksafetyalert.com', 'condado': 'Cork', 'categoria': 'local'},
     
