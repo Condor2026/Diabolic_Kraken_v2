@@ -206,7 +206,7 @@ python --version
 
 ```bash
 # PASO 1: Clonar el repositorio
-git clone https://github.com/tu-usuario/keltic-kraken.git
+git clone https://github.com/Condor2026/keltic-kraken
 cd keltic-kraken
 
 # PASO 2: Crear entorno virtual
@@ -221,14 +221,14 @@ pip install -r requirements.txt
 python3 -c "import requests, bs4, flask; print('✅ Todo correcto')"
 
 # PASO 5: Ejecutar
-python3 keltic_kraken.py
+python3 keltic-kraken.py
 ```
 
 ### 🪟 Windows
 
 ```powershell
 # PASO 1: Clonar el repositorio
-git clone https://github.com/tu-usuario/keltic-kraken.git
+git clone https://github.com/Condor2026/keltic-kraken
 cd keltic-kraken
 
 # PASO 2: Crear entorno virtual
@@ -243,7 +243,7 @@ pip install -r requirements.txt
 python -c "import requests, bs4, flask; print('✅ Todo correcto')"
 
 # PASO 5: Ejecutar
-python keltic_kraken.py
+python keltic-kraken.py
 ```
 
 ### 🐳 Docker
