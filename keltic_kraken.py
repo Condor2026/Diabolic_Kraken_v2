@@ -256,10 +256,10 @@ def cprint(texto, color=None, bold=False, dim=False, italic=False, underline=Fal
 
 VERSION = "3.0"
 PUERTO = 5014
-ARCHIVO_DATOS = 'keltic_kraken_ireland.json'
+ARCHIVO_DATOS = 'keltic-kraken_ireland.json'
 ARCHIVO_CACHE = 'url_cache_ireland.json'
 ARCHIVO_ESTADO = 'estado_fuentes_ireland.json'
-ARCHIVO_BACKUP = 'keltic_kraken_backup.json'
+ARCHIVO_BACKUP = 'keltic-kraken_backup.json'
 PAGINAS_BUSQUEDA = 5
 TIMEOUT = 25
 MAX_INTENTOS = 3
@@ -2233,17 +2233,17 @@ def mostrar_banner_inicial():
 ║   ██║  ██╗███████╗███████╗ ██║   ██║╚██████╗     ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
 ║   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═╝   ╚═╝ ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
 ║                                                                               ║
-║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM            ║
+║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM           ║
 ║                                                                               ║
-║   ═══════════════════════════════════════════════════════════════════════    ║
+║   ═══════════════════════════════════════════════════════════════════════     ║
 ║                                                                               ║
 ║   📊 Real-time monitoring: Drug trafficking · Gang violence · Organized crime ║
-║   🏴 Covers ALL 32 counties including Northern Ireland                       ║
+║   🏴 Covers ALL 32 counties including Northern Ireland                        ║
 ║   🔄 150+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system    ║
 ║   📈 Interactive charts · Full statistics dashboard · Web interface           ║
 ║   🔍 Smart retry mechanism · URL cache · Session persistence                  ║
 ║                                                                               ║
-║   ═══════════════════════════════════════════════════════════════════════    ║
+║   ═══════════════════════════════════════════════════════════════════════     ║
 ║                                                                               ║
 ║   🛡️  \"Un gran poder conlleva una gran responsabilidad\" - Spider-Man        ║
 ║                                                                               ║
