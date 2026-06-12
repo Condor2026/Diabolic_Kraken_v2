@@ -58,7 +58,7 @@ pip install --upgrade pip
 pip install -r requirements.txt
 
 # Make script executable
-chmod +x keltic-kraken.py
+chmod +x keltic_kraken.py
 
 # Final message
 echo -e "\n${GREEN}"
