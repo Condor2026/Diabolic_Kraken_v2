@@ -520,19 +520,19 @@ Cada tarjeta muestra:
 ```
 keltic-kraken/
 │
-├── 📄 keltic_kraken.py          # Script principal (2250+ líneas)
+├── 📄 keltic-kraken.py          # Script principal (2250+ líneas)
 ├── 📄 requirements.txt          # Dependencias Python
 ├── 📄 README.md                 # Este documento
 ├── 📄 LICENSE                   # GPL v3
 │
-├── 📊 keltic_kraken_ireland.json   # Base de datos de incidentes
-├── 💾 keltic_kraken_backup.json    # Copia de seguridad automática
+├── 📊 keltic-kraken_ireland.json   # Base de datos de incidentes
+├── 💾 keltic-kraken_backup.json    # Copia de seguridad automática
 ├── 🗺️ url_cache_ireland.json       # Caché de URLs descubiertas
 ├── 📡 estado_fuentes_ireland.json  # Estado de cada fuente
 │
-├── 📤 keltic_kraken_export.json    # Exportación manual (JSON)
-├── 📤 keltic_kraken_export.csv     # Exportación manual (CSV)
-├── 📤 keltic_kraken_report.html    # Exportación manual (HTML)
+├── 📤 keltic-kraken_export.json    # Exportación manual (JSON)
+├── 📤 keltic-kraken_export.csv     # Exportación manual (CSV)
+├── 📤 keltic-kraken_report.html    # Exportación manual (HTML)
 │
 └── 📁 docs/                         # Documentación extra
     ├── usage.md
@@ -544,10 +544,10 @@ keltic-kraken/
 
 | Archivo | Cuándo | Qué contiene |
 |---------|--------|--------------|
-| `keltic_kraken_ireland.json` | 1ª ejecución | Todos los incidentes |
+| `keltic-kraken_ireland.json` | 1ª ejecución | Todos los incidentes |
 | `url_cache_ireland.json` | Auto-discovery | URLs alternativas |
 | `estado_fuentes_ireland.json` | Opción 8 | Estado activo/inactivo |
-| `keltic_kraken_backup.json` | Cada guardado | Copia de seguridad |
+| `keltic-kraken_backup.json` | Cada guardado | Copia de seguridad |
 
 ---
 
