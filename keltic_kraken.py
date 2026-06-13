@@ -2021,18 +2021,18 @@ def mostrar_menu_principal():
 {Color.YELLOW}┌{'─' * 50}┐{Color.RESET}
 {Color.YELLOW}│{Color.CYAN}  📋 {t('menu_title')}{' ' * 36}{Color.YELLOW}│{Color.RESET}
 {Color.YELLOW}├{'─' * 50}┤{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [1] 🔍 {t('cmd_buscar')}{' ' * 33}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [2] 📊 {t('cmd_analisis')}{' ' * 32}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [3] 🔗 {t('cmd_conexiones')}{' ' * 30}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [4] 📈 {t('cmd_evolucion')}{' ' * 33}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [5] 🌐 {t('cmd_web')}{' ' * 37}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [6] 📰 {t('cmd_ultimos')}{' ' * 34}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [7] 📥 {t('cmd_exportar')}{' ' * 34}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [8] 🔍 {t('cmd_verificar')}{' ' * 33}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [9] 📊 {t('cmd_tipos')}{' ' * 35}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [10] 📈 {t('cmd_estadisticas')}{' ' * 28}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.GREEN}  [11] 🧹 {t('cmd_limpiar')}{' ' * 35}{Color.YELLOW}│{Color.RESET}
-{Color.YELLOW}│{Color.RED}  [12] 🗑️ {t('cmd_salir')}{' ' * 37}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [1] 🔍 {t('cmd_buscar')}{' ' * 5}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [2] 📊 {t('cmd_analisis')}{' ' * 12}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [3] 🔗 {t('cmd_conexiones')}{' ' * 4}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [4] 📈 {t('cmd_evolucion')}{' ' * 11}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [5] 🌐 {t('cmd_web')}{' ' * 1}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [6] 📰 {t('cmd_ultimos')}{' ' * 8}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [7] 📥 {t('cmd_exportar')}{' ' * 12}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [8] 🔍 {t('cmd_verificar')}{' ' * 1}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [9] 📊 {t('cmd_tipos')}{' ' * 12}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [10] 📈 {t('cmd_estadisticas')}{' ' * 16}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.GREEN}  [11] 🧹 {t('cmd_limpiar')}{' ' * 9}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.RED}  [12] 🗑️ {t('cmd_salir')}{' ' * 20}{Color.YELLOW}│{Color.RESET}
 {Color.YELLOW}└{'─' * 50}┘{Color.RESET}
 """)
 
@@ -2228,7 +2228,7 @@ def mostrar_banner_inicial():
 ║   ██║  ██╗███████╗███████╗ ██║   ██║╚██████╗    ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
 ║   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═╝   ╚═╝ ╚═════╝    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
 ║                                                                                                   ║
-║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM                                    ║
+║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM                                     ║
 ║                                                                                                   ║
 ║   ═══════════════════════════════════════════════════════════════════════════════════════════     ║
 ║                                                                                                   ║
@@ -2267,10 +2267,10 @@ if __name__ == '__main__':
     
     # Preguntar modo de ejecución
     print(f"\n{Color.CYAN}┌{'─' * 40}┐{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 17}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 16}{Color.CYAN}│{Color.RESET}")
     print(f"{Color.CYAN}├{'─' * 40}┤{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.GREEN}  [1] Modo Terminal (recomendado){' ' * 13}{Color.CYAN}│{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard gráficos){' ' * 10}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.GREEN}  [1] Modo Terminal (recomendado){' ' * 9}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard gráficos){' ' * 6}{Color.CYAN}│{Color.RESET}")
     print(f"{Color.CYAN}└{'─' * 40}┘{Color.RESET}")
     
     modo = input(f"\n{Color.CYAN}➤ {Color.YELLOW}Elige: {Color.RESET}")
