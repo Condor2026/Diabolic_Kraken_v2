@@ -609,7 +609,6 @@ FUENTES_BASE = [
     {'nombre': 'Cork Independent', 'url': 'https://corkindependent.com/category/crime/', 'base': 'https://corkindependent.com', 'condado': 'Cork', 'categoria': 'local'},
     
     # === GALWAY REGION ===
-    {'nombre': 'Galway Daily', 'url': 'https://galwaydaily.com/category/crime/', 'base': 'https://galwaydaily.com', 'condado': 'Galway', 'categoria': 'local'},
     {'nombre': 'Connacht Tribune', 'url': 'https://www.connachttribune.ie/category/crime/', 'base': 'https://www.connachttribune.ie', 'condado': 'Galway', 'categoria': 'local'},
     
     # === LIMERICK REGION ===
@@ -635,12 +634,10 @@ FUENTES_BASE = [
     {'nombre': 'Highland Radio', 'url': 'https://highlandradio.com/category/crime/', 'base': 'https://highlandradio.com', 'condado': 'Donegal', 'categoria': 'local'},
     
     # === MAYO REGION ===
-    {'nombre': 'Mayo News', 'url': 'https://www.mayonews.ie/category/crime', 'base': 'https://www.mayonews.ie', 'condado': 'Mayo', 'categoria': 'local'},
     {'nombre': 'Midwest Radio', 'url': 'https://www.midwestradio.ie/news/crime/', 'base': 'https://www.midwestradio.ie', 'condado': 'Mayo', 'categoria': 'local'},
     
     # === WEXFORD REGION ===
-    {'nombre': 'Wexford People', 'url': 'https://www.wexfordpeople.ie/news/crime/', 'base': 'https://www.wexfordpeople.ie', 'condado': 'Wexford', 'categoria': 'local'},
-    {'nombre': 'Wexford Echo', 'url': 'https://wexfordecho.ie/category/crime/', 'base': 'https://wexfordecho.ie', 'condado': 'Wexford', 'categoria': 'local'},
+    #{'nombre fuente rota 1': 'Wexford People', 'url': 'https://www.wexfordpeople.ie/news/crime/', 'base': 'https://www.wexfordpeople.ie', 'condado': 'Wexford', 'categoria': 'local'},
     
     # === KILDARE REGION ===
     {'nombre': 'Kildare Now', 'url': 'https://kildarenow.com/crime', 'base': 'https://kildarenow.com', 'condado': 'Kildare', 'categoria': 'local'},
