@@ -6,18 +6,18 @@
 
 """
 ╔═══════════════════════════════════════════════════════════════════════════════╗
-║  🔪 KELTIC KRAKEN v3.0 - IRELAND CRIME INTELLIGENCE PLATFORM                 ║
-║  ═══════════════════════════════════════════════════════════════════════════ ║
-║  📊 Real-time monitoring: Drug trafficking · Gang violence · Organized crime ║
-║  🏴 Covers ALL 32 counties including Northern Ireland                        ║
-║  🔄 150+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system    ║
-║  📈 Interactive charts · Full statistics dashboard · Web interface           ║
-║  🔍 Smart retry mechanism · URL cache · Session persistence                  ║
-║                                                                              ║
+║  🔪 KELTIC KRAKEN v3.0 - IRELAND CRIME INTELLIGENCE PLATFORM                  ║
+║  ═══════════════════════════════════════════════════════════════════════════  ║
+║  📊 Real-time monitoring: Drug trafficking · Gang violence · Organized crime  ║
+║  🏴 Covers ALL 32 counties including Northern Ireland                         ║
+║  🔄 150+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system     ║
+║  📈 Interactive charts · Full statistics dashboard · Web interface            ║
+║  🔍 Smart retry mechanism · URL cache · Session persistence                   ║
+║                                                                               ║
 ║  🛡️ "Un gran poder conlleva una gran responsabilidad" - Spider-Man            ║
-║                                                                              ║
-║                                         - By Condor2026                      ║
-║                                         •SpectrumSecurity•                   ║
+║                                                                               ║
+║                                         - By Condor2026                       ║
+║                                         •SpectrumSecurity•                    ║
 ╚═══════════════════════════════════════════════════════════════════════════════╝
 """
 
@@ -260,8 +260,8 @@ ARCHIVO_DATOS = 'keltic_kraken_ireland.json'
 ARCHIVO_CACHE = 'url_cache_ireland.json'
 ARCHIVO_ESTADO = 'estado_fuentes_ireland.json'
 ARCHIVO_BACKUP = 'keltic_kraken_backup.json'
-PAGINAS_BUSQUEDA = 5
-TIMEOUT = 15
+PAGINAS_BUSQUEDA = 4
+TIMEOUT = 12
 MAX_INTENTOS = 1
 DELAY_MIN = 0.8
 DELAY_MAX = 2.0
@@ -2199,12 +2199,12 @@ def mostrar_banner_inicial():
 {Color.RED}
 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════╗
 ║                                                                                                   ║
-║   ██╗  ██╗███████╗██╗  ████████╗██╗ ██████╗     ██╗  ██╗██████╗  █████╗ ██╗  ██╗███████╗███╗   ██╗
-║   ██║ ██╔╝██╔════╝██║  ╚══██╔══╝██║██╔════╝     ██║ ██╔╝██╔══██╗██╔══██╗██║ ██╔╝██╔════╝████╗  ██║
-║   █████╔╝ █████╗  ██║     ██║   ██║██║          █████╔╝ ██████╔╝███████║█████╔╝ █████╗  ██╔██╗ ██║
-║   ██╔═██╗ ██╔══╝  ██║     ██║   ██║██║          ██╔═██╗ ██╔══██╗██╔══██║██╔═██╗ ██╔══╝  ██║╚██╗██║
-║   ██║  ██╗███████╗███████╗ ██║   ██║╚██████╗    ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
-║   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═╝   ╚═╝ ╚═════╝    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
+║   ██╗  ██╗███████╗██╗  ████████╗██╗██████╗     ██╗  ██╗██████╗  █████╗ ██╗  ██╗███████╗███╗   ██╗
+║   ██║ ██╔╝██╔════╝██║  ╚══██╔══╝██║██╔═══╝     ██║ ██╔╝██╔══██╗██╔══██╗██║ ██╔╝██╔════╝████╗  ██║
+║   █████╔╝ █████╗  ██║     ██║   ██║██║         █████╔╝ ██████╔╝███████║█████╔╝ █████╗  ██╔██╗ ██║
+║   ██╔═██╗ ██╔══╝  ██║     ██║   ██║██║         ██╔═██╗ ██╔══██╗██╔══██║██╔═██╗ ██╔══╝  ██║╚██╗██║
+║   ██║  ██╗███████╗███████╗██║   ██║██████╗     ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
+║   ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝   ╚═╝╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
 ║                                                                                                   ║
 ║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM                                     ║
 ║                                                                                                   ║
@@ -2218,7 +2218,7 @@ def mostrar_banner_inicial():
 ║                                                                                                   ║
 ║   ═══════════════════════════════════════════════════════════════════════════════════════════     ║
 ║                                                                                                   ║
-║   🛡️  \"Un gran poder conlleva una gran responsabilidad\" - Spider-Man                              ║
+║   🛡️  \"Un gran poder conlleva una gran responsabilidad\" - Spider-Man                               ║
 ║                                                                                                   ║
 ║                                         - By Condor2026                                           ║
 ║                                         •SpectrumSecurity•                                        ║
