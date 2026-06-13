@@ -14,7 +14,7 @@
 ║  📈 Interactive charts · Full statistics dashboard · Web interface           ║
 ║  🔍 Smart retry mechanism · URL cache · Session persistence                  ║
 ║                                                                              ║
-║  🛡️ "Un gran poder conlleva una gran responsabilidad" - Spider-Man          ║
+║  🛡️ "Un gran poder conlleva una gran responsabilidad" - Spider-Man            ║
 ║                                                                              ║
 ║                                         - By Condor2026                      ║
 ║                                         •SpectrumSecurity•                   ║
@@ -50,10 +50,10 @@ def mostrar_banner_idioma():
     print(f"""
 {Color.CYAN}╔════════════════════════════════════════════════════════════════════╗
 ║                                                                    ║
-║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE         ║
+║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE              ║
 ║                                                                    ║
-║   "Vigilamos para proteger, no para señalar. Datos públicos,      ║
-║    ética inquebrantable, transparencia absoluta."                 ║
+║   "Vigilamos para proteger, no para señalar. Datos públicos,       ║
+║    ética inquebrantable, transparencia absoluta."                  ║
 ║                                                                    ║
 ╚════════════════════════════════════════════════════════════════════╝
 {Color.RESET}""")
@@ -62,8 +62,8 @@ def mostrar_menu_idioma():
     print(f"\n{Color.YELLOW}┌{'─' * 50}┐{Color.RESET}")
     print(f"{Color.YELLOW}│{Color.CYAN}  🌍 SELECCIONE IDIOMA / SELECT LANGUAGE{' ' * 20}{Color.YELLOW}│{Color.RESET}")
     print(f"{Color.YELLOW}├{'─' * 50}┤{Color.RESET}")
-    print(f"{Color.YELLOW}│{Color.GREEN}  [1] Español                                 {Color.YELLOW}│{Color.RESET}")
-    print(f"{Color.YELLOW}│{Color.GREEN}  [2] English                                 {Color.YELLOW}│{Color.RESET}")
+    print(f"{Color.YELLOW}│{Color.GREEN}  [1] Español                                    {Color.YELLOW}│{Color.RESET}")
+    print(f"{Color.YELLOW}│{Color.GREEN}  [2] English                                    {Color.YELLOW}│{Color.RESET}")
     print(f"{Color.YELLOW}└{'─' * 50}┘{Color.RESET}")
 
 def seleccionar_idioma():
@@ -2228,7 +2228,7 @@ def mostrar_banner_inicial():
 ║   ██║  ██╗███████╗███████╗ ██║   ██║╚██████╗    ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
 ║   ╚═╝  ╚═╝╚══════╝╚══════╝ ╚═╝   ╚═╝ ╚═════╝    ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
 ║                                                                                                   ║
-║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM                               ║
+║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM                                    ║
 ║                                                                                                   ║
 ║   ═══════════════════════════════════════════════════════════════════════════════════════════     ║
 ║                                                                                                   ║
@@ -2240,7 +2240,7 @@ def mostrar_banner_inicial():
 ║                                                                                                   ║
 ║   ═══════════════════════════════════════════════════════════════════════════════════════════     ║
 ║                                                                                                   ║
-║   🛡️  \"Un gran poder conlleva una gran responsabilidad\" - Spider-Man                            ║
+║   🛡️  \"Un gran poder conlleva una gran responsabilidad\" - Spider-Man                              ║
 ║                                                                                                   ║
 ║                                         - By Condor2026                                           ║
 ║                                         •SpectrumSecurity•                                        ║
@@ -2267,7 +2267,7 @@ if __name__ == '__main__':
     
     # Preguntar modo de ejecución
     print(f"\n{Color.CYAN}┌{'─' * 40}┐{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 20}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 17}{Color.CYAN}│{Color.RESET}")
     print(f"{Color.CYAN}├{'─' * 40}┤{Color.RESET}")
     print(f"{Color.CYAN}│{Color.GREEN}  [1] Modo Terminal (recomendado){' ' * 13}{Color.CYAN}│{Color.RESET}")
     print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard gráficos){' ' * 10}{Color.CYAN}│{Color.RESET}")
