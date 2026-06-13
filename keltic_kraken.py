@@ -675,7 +675,7 @@ FUENTES_BASE = [
     
     # === WICKLOW REGION ===
     {'nombre': 'Wicklow News', 'url': 'https://wicklownews.net/category/crime/', 'base': 'https://wicklownews.net', 'condado': 'Wicklow', 'categoria': 'local'},
-    {'nombre': 'Wicklow People', 'url': 'https://www.wicklowpeople.ie/news/crime/', 'base': 'https://www.wicklowpeople.ie', 'condado': 'Wicklow', 'categoria': 'local'},
+    #{'nombre': 'Wicklow People', 'url': 'https://www.wicklowpeople.ie/news/crime/', 'base': 'https://www.wicklowpeople.ie', 'condado': 'Wicklow', 'categoria': 'local'},
     
     # === CARLOW REGION ===
     {'nombre': 'Carlow Live', 'url': 'https://carlowlive.ie/category/crime/', 'base': 'https://carlowlive.ie', 'condado': 'Carlow', 'categoria': 'local'},
@@ -689,10 +689,10 @@ FUENTES_BASE = [
     
     # === LEITRIM REGION ===
     {'nombre': 'Leitrim Observer', 'url': 'https://www.leitrimobserver.ie/news/crime/', 'base': 'https://www.leitrimobserver.ie', 'condado': 'Leitrim', 'categoria': 'local'},
-    {'nombre': 'Leitrim Live', 'url': 'https://leitrimlive.ie/category/crime/', 'base': 'https://leitrimlive.ie', 'condado': 'Leitrim', 'categoria': 'local'},
+    #{'nombre': 'Leitrim Live', 'url': 'https://leitrimlive.ie/category/crime/', 'base': 'https://leitrimlive.ie', 'condado': 'Leitrim', 'categoria': 'local'},
     
     # === NORTHERN IRELAND - BELFAST/ANTRIM ===
-    {'nombre': 'Belfast Telegraph', 'url': 'https://www.belfasttelegraph.co.uk/news/crime/', 'base': 'https://www.belfasttelegraph.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
+    #{'nombre': 'Belfast Telegraph', 'url': 'https://www.belfasttelegraph.co.uk/news/crime/', 'base': 'https://www.belfasttelegraph.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
     {'nombre': 'Irish News', 'url': 'https://www.irishnews.com/news/crime/', 'base': 'https://www.irishnews.com', 'condado': 'Antrim', 'categoria': 'ni'},
     {'nombre': 'Belfast Live', 'url': 'https://www.belfastlive.co.uk/news/belfast-crime/', 'base': 'https://www.belfastlive.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
     {'nombre': 'News Letter', 'url': 'https://www.newsletter.co.uk/news/crime', 'base': 'https://www.newsletter.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
@@ -706,7 +706,7 @@ FUENTES_BASE = [
     {'nombre': 'Newry Reporter', 'url': 'https://www.newryreporter.com/news/crime/', 'base': 'https://www.newryreporter.com', 'condado': 'Down', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - TYRONE ===
-    {'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},
+    #{'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - ARMAGH ===
     {'nombre': 'Armagh I', 'url': 'https://armaghi.com/category/crime/', 'base': 'https://armaghi.com', 'condado': 'Armagh', 'categoria': 'ni'},
