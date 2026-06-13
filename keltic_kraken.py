@@ -728,7 +728,7 @@ FUENTES_BASE = [
     {'nombre': 'Cork Beo', 'url': 'https://www.corkbeo.ie/news/cork-crime/', 'base': 'https://www.corkbeo.ie', 'condado': 'Cork', 'categoria': 'local'},
     {'nombre': 'Cork Independent', 'url': 'https://corkindependent.com/category/crime/', 'base': 'https://corkindependent.com', 'condado': 'Cork', 'categoria': 'local'},
     # The Corkman - Fuente local de noticias de Cork
-    {'nombre': 'The Corkman', 'url': 'https://www.thecorkman.ie/news/crime/', 'base': 'https://www.thecorkman.ie', 'condado': 'Cork', 'categoria': 'local'},
+    #{'nombre': 'The Corkman', 'url': 'https://www.thecorkman.ie/news/crime/', 'base': 'https://www.thecorkman.ie', 'condado': 'Cork', 'categoria': 'local'},
     
     # ========================================================================
     # === GALWAY REGION - REGIÓN DE GALWAY ===
