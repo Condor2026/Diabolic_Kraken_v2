@@ -5,20 +5,21 @@
 # SPDX-FileCopyrightText: 2026 Condor2026 / SpectrumSecurity
 
 """
-╔═══════════════════════════════════════════════════════════════════════════════╗
-║  🔪 KELTIC KRAKEN v3.0 - IRELAND CRIME INTELLIGENCE PLATFORM                  ║
-║  ═══════════════════════════════════════════════════════════════════════════  ║
-║  📊 Real-time monitoring: Drug trafficking · Gang violence · Organized crime  ║
-║  🏴 Covers ALL 32 counties including Northern Ireland                         ║
-║  🔄 150+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system     ║
-║  📈 Interactive charts · Full statistics dashboard · Web interface            ║
-║  🔍 Smart retry mechanism · URL cache · Session persistence                   ║
-║                                                                               ║
-║  🛡️ "Un gran poder conlleva una gran responsabilidad" - Spider-Man            ║
-║                                                                               ║
-║                                         - By Condor2026                       ║
-║                                         •SpectrumSecurity•                    ║
-╚═══════════════════════════════════════════════════════════════════════════════╝
+╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+║  🔪 KELTIC KRAKEN v3.0 - IRELAND CRIME INTELLIGENCE PLATFORM                                                  ║
+║  ═══════════════════════════════════════════════════════════════════════════════════════════════════════════ ║
+║  📊 Real-time monitoring: Drug trafficking · Gang violence · Organized crime                                  ║
+║  🏴 Covers ALL 32 counties including Northern Ireland                                                         ║
+║  🔄 180+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system                                     ║
+║  📈 Interactive charts · Full statistics dashboard · Web interface                                            ║
+║  🔍 Smart retry mechanism · URL cache · Session persistence                                                   ║
+║  📄 Pagination in web panel · Save after each source · Duplicate removal                                      ║
+║                                                                                                               ║
+║  🛡️ "Un gran poder conlleva una gran responsabilidad" - Spider-Man                                            ║
+║                                                                                                               ║
+║                                         - By Condor2026                                                       ║
+║                                         •SpectrumSecurity•                                                    ║
+╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
 """
 
 import os
@@ -31,17 +32,19 @@ import requests
 import re
 import csv
 import io
+import signal
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 from flask import Flask, render_template_string, jsonify, request, Response
 from collections import defaultdict
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-from threading import Thread, Lock
-from queue import Queue
+from threading import Lock
 
 # ============================================================================
-# LANGUAGE SELECTOR WITH BEAUTIFUL INTERFACE
+# ============================================================================
+# LANGUAGE SELECTOR WITH BEAUTIFUL INTERFACE - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 IDIOMA_ACTUAL = None
@@ -125,7 +128,7 @@ TEXTOS = {
         'procesando': 'Procesando...'
     },
     'en': {
-        'app_name': '🔪KELTIC KRAKEN v3.0',
+        'app_name': '🔪 KELTIC KRAKEN v3.0',
         'welcome_title': 'IRELAND CRIMINAL INTELLIGENCE PLATFORM',
         'elegir_idioma': 'Select language: 1. Spanish  2. English',
         'menu_title': 'MAIN MENU',
@@ -167,7 +170,9 @@ def t(clave):
     return TEXTOS[IDIOMA_ACTUAL].get(clave, clave)
 
 # ============================================================================
-# COLORES PROFESIONALES PARA TERMINAL
+# ============================================================================
+# COLORES PROFESIONALES PARA TERMINAL - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 class Color:
@@ -251,7 +256,9 @@ def cprint(texto, color=None, bold=False, dim=False, italic=False, underline=Fal
     print(f"{bg_col}{style_str}{col}{texto}{Color.RESET}", end=end)
 
 # ============================================================================
-# CONFIGURACIÓN DEL SISTEMA
+# ============================================================================
+# CONFIGURACIÓN DEL SISTEMA - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 VERSION = "3.0"
@@ -261,102 +268,137 @@ ARCHIVO_CACHE = 'url_cache_ireland.json'
 ARCHIVO_ESTADO = 'estado_fuentes_ireland.json'
 ARCHIVO_BACKUP = 'keltic_kraken_backup.json'
 PAGINAS_BUSQUEDA = 4
-TIMEOUT = 12
-MAX_INTENTOS = 1
+TIMEOUT = 15
+MAX_INTENTOS = 2
 DELAY_MIN = 0.8
 DELAY_MAX = 2.0
+ITEMS_POR_PAGINA = 10
 
 # ============================================================================
-# 150+ USER-AGENTS MODERNOS (COMPLETOS)
+# ============================================================================
+# 180+ USER-AGENTS MODERNOS - VERSIÓN COMPLETA SIN RECORTES
+# ============================================================================
 # ============================================================================
 
 USER_AGENTS = [
-    # Chrome 125 - Windows
+    # ========================================================================
+    # CHROME WINDOWS - VERSIONES 118 A 125
+    # ========================================================================
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.42 Safari/537.36',
-    
-    # Chrome 124 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.91 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.62 Safari/537.36',
-    
-    # Chrome 123 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.122 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.86 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.58 Safari/537.36',
-    
-    # Chrome 122 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.129 Safari/537.36',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.95 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.184 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.160 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.216 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.199 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.159 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.123 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.5993.88 Safari/537.36',
     
-    # Chrome 125 - Mac
+    # ========================================================================
+    # CHROME MAC - VERSIONES 118 A 125
+    # ========================================================================
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.42 Safari/537.36',
-    
-    # Chrome 124 - Mac
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.91 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.62 Safari/537.36',
-    
-    # Chrome 123 - Mac
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.122 Safari/537.36',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.86 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.129 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.95 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.6167.184 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.216 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.159 Safari/537.36',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
     
-    # Chrome 125 - Linux
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36',
-    
-    # Firefox 126 - Windows
+    # ========================================================================
+    # FIREFOX WINDOWS - VERSIONES 115 A 126
+    # ========================================================================
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0.1',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:126.0) Gecko/20100101 Firefox/126.0b9',
-    
-    # Firefox 125 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0.3',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0.2',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:125.0) Gecko/20100101 Firefox/125.0.1',
-    
-    # Firefox 124 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0.2',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:124.0) Gecko/20100101 Firefox/124.0.1',
-    
-    # Firefox 123 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:123.0) Gecko/20100101 Firefox/123.0.1',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:122.0) Gecko/20100101 Firefox/122.0.1',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:121.0) Gecko/20100101 Firefox/121.0.1',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:120.0) Gecko/20100101 Firefox/120.0.1',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:119.0) Gecko/20100101 Firefox/119.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:118.0) Gecko/20100101 Firefox/118.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:115.0) Gecko/20100101 Firefox/115.0.2',
     
-    # Firefox 126 - Mac
+    # ========================================================================
+    # FIREFOX MAC - VERSIONES 115 A 126
+    # ========================================================================
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:126.0) Gecko/20100101 Firefox/126.0',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:126.0) Gecko/20100101 Firefox/126.0.1',
-    
-    # Firefox 125 - Mac
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:125.0) Gecko/20100101 Firefox/125.0',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:125.0) Gecko/20100101 Firefox/125.0.3',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:125.0) Gecko/20100101 Firefox/125.0.2',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:125.0) Gecko/20100101 Firefox/125.0.1',
-    
-    # Firefox 124 - Mac
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:124.0) Gecko/20100101 Firefox/124.0',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:124.0) Gecko/20100101 Firefox/124.0.2',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:124.0) Gecko/20100101 Firefox/124.0.1',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:123.0) Gecko/20100101 Firefox/123.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:122.0) Gecko/20100101 Firefox/122.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:121.0) Gecko/20100101 Firefox/121.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:120.0) Gecko/20100101 Firefox/120.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:119.0) Gecko/20100101 Firefox/119.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:118.0) Gecko/20100101 Firefox/118.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:115.0) Gecko/20100101 Firefox/115.0',
     
-    # Firefox 126 - Linux
+    # ========================================================================
+    # FIREFOX LINUX - VERSIONES 118 A 126
+    # ========================================================================
     'Mozilla/5.0 (X11; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0',
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0',
     'Mozilla/5.0 (X11; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0',
     'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:125.0) Gecko/20100101 Firefox/125.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0',
+    'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:124.0) Gecko/20100101 Firefox/124.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:123.0) Gecko/20100101 Firefox/123.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:122.0) Gecko/20100101 Firefox/122.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:121.0) Gecko/20100101 Firefox/121.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:119.0) Gecko/20100101 Firefox/119.0',
+    'Mozilla/5.0 (X11; Linux x86_64; rv:118.0) Gecko/20100101 Firefox/118.0',
     
-    # Safari 17 - Mac
+    # ========================================================================
+    # SAFARI MAC - VERSIONES 16 Y 17
+    # ========================================================================
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Safari/605.1.15',
@@ -364,37 +406,46 @@ USER_AGENTS = [
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Safari/605.1.15',
-    
-    # Safari 16 - Mac
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5.2 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Safari/605.1.15',
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Safari/605.1.15',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Safari/605.1.15',
     
-    # Edge 125 - Windows
+    # ========================================================================
+    # EDGE WINDOWS - VERSIONES 118 A 125
+    # ========================================================================
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36 Edg/125.0.6422.60',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.42 Safari/537.36 Edg/125.0.6422.42',
-    
-    # Edge 124 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 Edg/124.0.0.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36 Edg/124.0.6367.118',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.91 Safari/537.36 Edg/124.0.6367.91',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.62 Safari/537.36 Edg/124.0.6367.62',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 Edg/123.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.122 Safari/537.36 Edg/123.0.6312.122',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 Edg/122.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 Edg/121.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36 Edg/119.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36 Edg/118.0.0.0',
     
-    # Edge 125 - Mac
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Edg/125.0.0.0',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36 Edg/125.0.6422.60',
-    
-    # Opera 110 - Windows
+    # ========================================================================
+    # OPERA - VERSIONES 106 A 110
+    # ========================================================================
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/110.0.0.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36 OPR/110.0.5322.60',
-    
-    # Opera 109 - Windows
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 OPR/109.0.0.0',
     'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36 OPR/109.0.5322.118',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36 OPR/108.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36 OPR/107.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36 OPR/106.0.0.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 OPR/110.0.0.0',
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36 OPR/109.0.0.0',
     
-    # iPhone Safari 17
+    # ========================================================================
+    # IPHONE SAFARI - iOS 16 Y 17
+    # ========================================================================
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1',
@@ -402,58 +453,102 @@ USER_AGENTS = [
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2.1 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 17_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.2 Mobile/15E148 Safari/604.1',
-    
-    # iPhone Safari 16
     'Mozilla/5.0 (iPhone; CPU iPhone OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 16_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4.1 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPhone; CPU iPhone OS 16_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 16_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.3 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 16_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.2 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (iPhone; CPU iPhone OS 16_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Mobile/15E148 Safari/604.1',
     
-    # iPad Safari
+    # ========================================================================
+    # IPAD SAFARI - iOS 16 Y 17
+    # ========================================================================
     'Mozilla/5.0 (iPad; CPU OS 17_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.5 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPad; CPU OS 17_4_1 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4.1 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPad; CPU OS 17_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.4 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (iPad; CPU OS 17_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.3 Mobile/15E148 Safari/604.1',
     'Mozilla/5.0 (iPad; CPU OS 16_6 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.6 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (iPad; CPU OS 16_5 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.5 Mobile/15E148 Safari/604.1',
+    'Mozilla/5.0 (iPad; CPU OS 16_4 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.4 Mobile/15E148 Safari/604.1',
     
-    # Android Chrome
+    # ========================================================================
+    # ANDROID CHROME - ANDROID 12, 13, 14
+    # ========================================================================
     'Mozilla/5.0 (Linux; Android 14; SM-S921B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; Android 14; SM-S921B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; Android 14; Pixel 8 Pro) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 14; SM-S921B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 14; Pixel 8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 13; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36',
     'Mozilla/5.0 (Linux; Android 12; SM-A525F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 12; SM-A525F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 12; SM-A525F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Mobile Safari/537.36',
+    'Mozilla/5.0 (Linux; Android 12; SM-A525F) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Mobile Safari/537.36',
     
-    # Android Firefox
+    # ========================================================================
+    # ANDROID FIREFOX - ANDROID 12, 13, 14
+    # ========================================================================
     'Mozilla/5.0 (Android 14; Mobile; rv:126.0) Gecko/126.0 Firefox/126.0',
     'Mozilla/5.0 (Android 14; Mobile; rv:125.0) Gecko/125.0 Firefox/125.0',
     'Mozilla/5.0 (Android 13; Mobile; rv:124.0) Gecko/124.0 Firefox/124.0',
     'Mozilla/5.0 (Android 13; Mobile; rv:123.0) Gecko/123.0 Firefox/123.0',
+    'Mozilla/5.0 (Android 12; Mobile; rv:122.0) Gecko/122.0 Firefox/122.0',
+    'Mozilla/5.0 (Android 12; Mobile; rv:121.0) Gecko/121.0 Firefox/121.0',
+    'Mozilla/5.0 (Android 12; Mobile; rv:120.0) Gecko/120.0 Firefox/120.0',
     
-    # Search engine bots
+    # ========================================================================
+    # CHROME LINUX - VERSIONES 118 A 125
+    # ========================================================================
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.6422.60 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.6367.118 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/123.0.6312.122 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.6261.129 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.6045.159 Safari/537.36',
+    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+    
+    # ========================================================================
+    # SEARCH ENGINE BOTS (útiles para evitar bloqueos)
+    # ========================================================================
     'Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)',
     'Mozilla/5.0 (compatible; Bingbot/2.0; +http://www.bing.com/bingbot.htm)',
     'Mozilla/5.0 (compatible; Yahoo! Slurp; http://help.yahoo.com/help/us/ysearch/slurp)',
     'Mozilla/5.0 (compatible; DuckDuckBot-Https/1.1; https://duckduckgo.com/duckduckbot)',
     'Mozilla/5.0 (compatible; YandexBot/3.0; +http://yandex.com/bots)',
     'Mozilla/5.0 (compatible; Baiduspider/2.0; +http://www.baidu.com/search/spider.html)',
+    'Mozilla/5.0 (compatible; Facebookbot/1.0; +http://www.facebook.com/bot)',
+    'Mozilla/5.0 (compatible; Twitterbot/1.0)',
+    'Mozilla/5.0 (compatible; Applebot/0.3; +http://www.apple.com/go/applebot)',
     
-    # Legacy browsers (sometimes work better)
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/115.0.2',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+    # ========================================================================
+    # LEGACY BROWSERS (a veces funcionan mejor en sitios viejos)
+    # ========================================================================
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/111.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:109.0) Gecko/20100101 Firefox/110.0',
     
-    # Linux additional
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36',
-    'Mozilla/5.0 (X11; Fedora; Linux x86_64; rv:126.0) Gecko/20100101 Firefox/126.0',
-    'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/118.0.0.0 Safari/537.36',
+    # ========================================================================
+    # EXTRA - SAMSUNG INTERNET, BRAVE, VIVALDI
+    # ========================================================================
+    'Mozilla/5.0 (Linux; Android 13; SM-S908B) AppleWebKit/537.36 (KHTML, like Gecko) SamsungBrowser/22.0 Chrome/111.0.5563.116 Mobile Safari/537.36',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Brave/125.0.0.0',
+    'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 Vivaldi/6.6.0.0',
 ]
 
 def get_random_ua():
-    """Retorna un User-Agent aleatorio de la lista de 150+"""
+    """Retorna un User-Agent aleatorio de la lista de 180+"""
     return random.choice(USER_AGENTS)
 
 def get_random_delay():
@@ -461,7 +556,9 @@ def get_random_delay():
     return random.uniform(DELAY_MIN, DELAY_MAX)
 
 # ============================================================================
-# SISTEMA DE AUTO-DESCOBRIMIENTO DE URLs
+# ============================================================================
+# SISTEMA DE AUTO-DESCOBRIMIENTO DE URLs - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 class URLAutoDiscoverer:
@@ -474,7 +571,9 @@ class URLAutoDiscoverer:
         self.cache_file = ARCHIVO_CACHE
         self.cache = self.load_cache()
         self.common_paths = [
-            # Crime section paths
+            # ================================================================
+            # Crime section paths - paths principales de secciones de crimen
+            # ================================================================
             'crime', 'crimes', 'news/crime', 'crime-news', 'crime-law',
             'courts', 'justice', 'irish-news/crime', 'category/crime',
             'crime/cork', 'crime/dublin', 'crime/galway', 'crime/limerick',
@@ -484,11 +583,18 @@ class URLAutoDiscoverer:
             'breaking-crime', 'latest-crime', 'crime-updates', 'crime-stories',
             'court-reports', 'trial-news', 'sentencing', 'arrest-news',
             'drug-seizure', 'gang-crime', 'organised-crime', 'paramilitary',
-            # Pagination patterns
+            
+            # ================================================================
+            # Pagination patterns - patrones de paginación
+            # ================================================================
             'page', 'pagina', 'pagination', 'archive', 'category',
-            # Common CMS patterns
+            
+            # ================================================================
+            # Common CMS patterns - patrones comunes de CMS
+            # ================================================================
             '?cat=crime', '?category=crime', '?section=crime', '?topic=crime',
-            '#crime', '/crime/', '/crimen', '/criminal', '/delitos'
+            '#crime', '/crime/', '/crimen', '/criminal', '/delitos',
+            '/sucesos', '/faits-divers', '/noticias-crimen'
         ]
         
     def load_cache(self):
@@ -515,7 +621,9 @@ class URLAutoDiscoverer:
         base_url = fuente['base']
         original_url = fuente['url']
         
-        # Verificar caché primero
+        # ====================================================================
+        # Verificar caché primero - si ya encontramos esta URL antes
+        # ====================================================================
         if nombre in self.cache and self.cache[nombre].get('url'):
             cached_url = self.cache[nombre]['url']
             cprint(f"   📦 Cache encontrada: {cached_url}", 'gray', dim=True)
@@ -531,7 +639,9 @@ class URLAutoDiscoverer:
             except:
                 cprint(f"   ⚠️ Cache obsoleta (error de conexión)", 'yellow')
         
-        # Probar diferentes paths
+        # ====================================================================
+        # Probar diferentes paths - búsqueda exhaustiva
+        # ====================================================================
         cprint(f"   🔍 Buscando URL alternativa...", 'cyan', dim=True)
         
         for path in self.common_paths:
@@ -577,20 +687,24 @@ class URLAutoDiscoverer:
                 except:
                     continue
             
-            # Pequeña pausa entre intentos
+            # Pequeña pausa entre intentos para no sobrecargar
             time.sleep(0.2)
         
         cprint(f"   ❌ No se encontró URL alternativa, usando original", 'red')
         return original_url
 
 # ============================================================================
-# FUENTES DE IRLANDA (50+ fuentes verificadas)
+# ============================================================================
+# FUENTES DE IRLANDA - LISTA COMPLETA CON COMENTARIOS Y REGIONES
+# ============================================================================
 # ============================================================================
 
 FUENTES_BASE = [
-    # === NATIONAL NEWS OUTLETS ===
+    # ========================================================================
+    # === NATIONAL NEWS OUTLETS - PRINCIPALES PERIÓDICOS NACIONALES ===
+    # ========================================================================
     {'nombre': 'Irish Times', 'url': 'https://www.irishtimes.com/crime-law/', 'base': 'https://www.irishtimes.com', 'condado': 'Dublin', 'categoria': 'national'},
-    #{'nombre': 'Irish Independent', 'url': 'https://www.independent.ie/irish-news/crime/', 'base': 'https://www.independent.ie', 'condado': 'Dublin', 'categoria': 'national'},
+    # {'nombre': 'Irish Independent', 'url': 'https://www.independent.ie/irish-news/crime/', 'base': 'https://www.independent.ie', 'condado': 'Dublin', 'categoria': 'national'},  # Fuente rota - pendiente revisión
     {'nombre': 'RTÉ News', 'url': 'https://www.rte.ie/news/crime/', 'base': 'https://www.rte.ie', 'condado': 'Dublin', 'categoria': 'national'},
     {'nombre': 'The Journal', 'url': 'https://www.thejournal.ie/crime/', 'base': 'https://www.thejournal.ie', 'condado': 'Dublin', 'categoria': 'national'},
     {'nombre': 'Irish Mirror', 'url': 'https://www.irishmirror.ie/news/irish-crime/', 'base': 'https://www.irishmirror.ie', 'condado': 'Dublin', 'categoria': 'national'},
@@ -599,178 +713,295 @@ FUENTES_BASE = [
     {'nombre': 'Today FM', 'url': 'https://www.todayfm.com/news/crime/', 'base': 'https://www.todayfm.com', 'condado': 'Dublin', 'categoria': 'national'},
     {'nombre': 'Garda Post', 'url': 'https://www.gardapost.com/', 'base': 'https://www.gardapost.com', 'condado': 'Dublin', 'categoria': 'national'},
     
-    # === DUBLIN REGION ===
+    # ========================================================================
+    # === DUBLIN REGION - REGIÓN DE DUBLIN ===
+    # ========================================================================
+    # Dublin Live - Fuente principal de noticias de Dublín
+    {'nombre': 'Dublin Live', 'url': 'https://www.dublinlive.ie/news/dublin-crime/', 'base': 'https://www.dublinlive.ie', 'condado': 'Dublin', 'categoria': 'local'},
     {'nombre': 'Dublin Gazette', 'url': 'https://dublingazette.com/crime/', 'base': 'https://dublingazette.com', 'condado': 'Dublin', 'categoria': 'local'},
     {'nombre': 'Dublin People', 'url': 'https://dublinpeople.com/news/crime/', 'base': 'https://dublinpeople.com', 'condado': 'Dublin', 'categoria': 'local'},
     {'nombre': 'Dublin Evening Herald', 'url': 'https://www.dublinlive.ie/news/dublin-news/', 'base': 'https://www.dublinlive.ie', 'condado': 'Dublin', 'categoria': 'local'},
     
-    # === CORK REGION ===
+    # ========================================================================
+    # === CORK REGION - REGIÓN DE CORK ===
+    # ========================================================================
     {'nombre': 'Cork Beo', 'url': 'https://www.corkbeo.ie/news/cork-crime/', 'base': 'https://www.corkbeo.ie', 'condado': 'Cork', 'categoria': 'local'},
     {'nombre': 'Cork Independent', 'url': 'https://corkindependent.com/category/crime/', 'base': 'https://corkindependent.com', 'condado': 'Cork', 'categoria': 'local'},
+    # The Corkman - Fuente local de noticias de Cork
+    {'nombre': 'The Corkman', 'url': 'https://www.thecorkman.ie/news/crime/', 'base': 'https://www.thecorkman.ie', 'condado': 'Cork', 'categoria': 'local'},
     
-    # === GALWAY REGION ===
+    # ========================================================================
+    # === GALWAY REGION - REGIÓN DE GALWAY ===
+    # ========================================================================
+    {'nombre': 'Galway Beo', 'url': 'https://www.galwaybeo.ie/news/galway-crime/', 'base': 'https://www.galwaybeo.ie', 'condado': 'Galway', 'categoria': 'local'},
+    {'nombre': 'Galway Advertiser', 'url': 'https://www.galwayadvertiser.ie/crime/', 'base': 'https://www.galwayadvertiser.ie', 'condado': 'Galway', 'categoria': 'local'},
     {'nombre': 'Connacht Tribune', 'url': 'https://www.connachttribune.ie/category/crime/', 'base': 'https://www.connachttribune.ie', 'condado': 'Galway', 'categoria': 'local'},
+    {'nombre': 'Galway Bay FM', 'url': 'https://galwaybayfm.ie/news/crime/', 'base': 'https://galwaybayfm.ie', 'condado': 'Galway', 'categoria': 'local'},
     
-    # === LIMERICK REGION ===
+    # ========================================================================
+    # === LIMERICK REGION - REGIÓN DE LIMERICK ===
+    # ========================================================================
     {'nombre': 'Limerick Leader', 'url': 'https://www.limerickleader.ie/news/crime/', 'base': 'https://www.limerickleader.ie', 'condado': 'Limerick', 'categoria': 'local'},
     {'nombre': 'Limerick Post', 'url': 'https://www.limerickpost.ie/category/crime/', 'base': 'https://www.limerickpost.ie', 'condado': 'Limerick', 'categoria': 'local'},
     {'nombre': 'Limerick Live', 'url': 'https://www.limericklive.ie/news/crime/', 'base': 'https://www.limericklive.ie', 'condado': 'Limerick', 'categoria': 'local'},
     
-    # === WATERFORD REGION ===
+    # ========================================================================
+    # === WATERFORD REGION - REGIÓN DE WATERFORD ===
+    # ========================================================================
     {'nombre': 'Waterford News', 'url': 'https://www.waterford-news.ie/news/crime/', 'base': 'https://www.waterford-news.ie', 'condado': 'Waterford', 'categoria': 'local'},
     {'nombre': 'Waterford Live', 'url': 'https://www.waterfordlive.ie/news/crime/', 'base': 'https://www.waterfordlive.ie', 'condado': 'Waterford', 'categoria': 'local'},
     
-    # === KERRY REGION ===
-    #{'nombre': 'Kerryman', 'url': 'https://www.kerryman.ie/news/crime/', 'base': 'https://www.kerryman.ie', 'condado': 'Kerry', 'categoria': 'local'},
+    # ========================================================================
+    # === KERRY REGION - REGIÓN DE KERRY ===
+    # ========================================================================
+    # {'nombre': 'Kerryman', 'url': 'https://www.kerryman.ie/news/crime/', 'base': 'https://www.kerryman.ie', 'condado': 'Kerry', 'categoria': 'local'},  # Fuente rota - pendiente revisión
     {'nombre': 'Radio Kerry', 'url': 'https://www.radiokerry.ie/news/crime/', 'base': 'https://www.radiokerry.ie', 'condado': 'Kerry', 'categoria': 'local'},
     
-    # === CLARE REGION ===
+    # ========================================================================
+    # === CLARE REGION - REGIÓN DE CLARE ===
+    # ========================================================================
+    {'nombre': 'Clare Champion', 'url': 'https://www.clarechampion.ie/category/crime/', 'base': 'https://www.clarechampion.ie', 'condado': 'Clare', 'categoria': 'local'},
     {'nombre': 'Clare Echo', 'url': 'https://www.clareecho.ie/category/crime/', 'base': 'https://www.clareecho.ie', 'condado': 'Clare', 'categoria': 'local'},
     {'nombre': 'Clare FM', 'url': 'https://www.clare.fm/news/crime/', 'base': 'https://www.clare.fm', 'condado': 'Clare', 'categoria': 'local'},
     
-    # === DONEGAL REGION ===
+    # ========================================================================
+    # === DONEGAL REGION - REGIÓN DE DONEGAL ===
+    # ========================================================================
     {'nombre': 'Donegal Daily', 'url': 'https://donegaldaily.com/category/crime/', 'base': 'https://donegaldaily.com', 'condado': 'Donegal', 'categoria': 'local'},
-    #{'nombre': 'Donegal News', 'url': 'https://donegalnews.com/category/crime/', 'base': 'https://donegalnews.com', 'condado': 'Donegal', 'categoria': 'local'},
+    # {'nombre': 'Donegal News', 'url': 'https://donegalnews.com/category/crime/', 'base': 'https://donegalnews.com', 'condado': 'Donegal', 'categoria': 'local'},  # Fuente rota - pendiente revisión
     {'nombre': 'Highland Radio', 'url': 'https://highlandradio.com/category/crime/', 'base': 'https://highlandradio.com', 'condado': 'Donegal', 'categoria': 'local'},
     
-    # === MAYO REGION ===
+    # ========================================================================
+    # === MAYO REGION - REGIÓN DE MAYO ===
+    # ========================================================================
+    {'nombre': 'Mayo News', 'url': 'https://www.mayonews.ie/category/crime', 'base': 'https://www.mayonews.ie', 'condado': 'Mayo', 'categoria': 'local'},
+    {'nombre': 'Connaught Telegraph', 'url': 'https://www.connaughttelegraph.ie/category/crime/', 'base': 'https://www.connaughttelegraph.ie', 'condado': 'Mayo', 'categoria': 'local'},
     {'nombre': 'Midwest Radio', 'url': 'https://www.midwestradio.ie/news/crime/', 'base': 'https://www.midwestradio.ie', 'condado': 'Mayo', 'categoria': 'local'},
     
-    # === WEXFORD REGION ===
-    #{'nombre fuente rota 1': 'Wexford People', 'url': 'https://www.wexfordpeople.ie/news/crime/', 'base': 'https://www.wexfordpeople.ie', 'condado': 'Wexford', 'categoria': 'local'},
+    # ========================================================================
+    # === WEXFORD REGION - REGIÓN DE WEXFORD ===
+    # ========================================================================
+    # {'nombre': 'Wexford People', 'url': 'https://www.wexfordpeople.ie/news/crime/', 'base': 'https://www.wexfordpeople.ie', 'condado': 'Wexford', 'categoria': 'local'},  # Fuente rota - pendiente revisión
+    {'nombre': 'Wexford Echo', 'url': 'https://wexfordecho.ie/category/crime/', 'base': 'https://wexfordecho.ie', 'condado': 'Wexford', 'categoria': 'local'},
+    {'nombre': 'South East Radio', 'url': 'https://southeastradio.ie/news/crime/', 'base': 'https://southeastradio.ie', 'condado': 'Wexford', 'categoria': 'local'},
     
-    # === KILDARE REGION ===
+    # ========================================================================
+    # === KILDARE REGION - REGIÓN DE KILDARE ===
+    # ========================================================================
     {'nombre': 'Kildare Now', 'url': 'https://kildarenow.com/crime', 'base': 'https://kildarenow.com', 'condado': 'Kildare', 'categoria': 'local'},
+    {'nombre': 'Kildare Post', 'url': 'https://kildarepost.ie/category/crime/', 'base': 'https://kildarepost.ie', 'condado': 'Kildare', 'categoria': 'local'},
+    {'nombre': 'KFM Radio', 'url': 'https://kfmradio.com/news/crime/', 'base': 'https://kfmradio.com', 'condado': 'Kildare', 'categoria': 'local'},
     
-    # === TIPPERARY REGION ===
+    # ========================================================================
+    # === TIPPERARY REGION - REGIÓN DE TIPPERARY ===
+    # ========================================================================
     {'nombre': 'Tipperary Live', 'url': 'https://www.tipperarylive.ie/news/crime/', 'base': 'https://www.tipperarylive.ie', 'condado': 'Tipperary', 'categoria': 'local'},
     {'nombre': 'Tipperary Star', 'url': 'https://www.tipperarystar.ie/news/crime/', 'base': 'https://www.tipperarystar.ie', 'condado': 'Tipperary', 'categoria': 'local'},
     {'nombre': 'Tipp FM', 'url': 'https://www.tippfm.com/news/crime/', 'base': 'https://www.tippfm.com', 'condado': 'Tipperary', 'categoria': 'local'},
     
-    # === LOUTH REGION ===
+    # ========================================================================
+    # === LOUTH REGION - REGIÓN DE LOUTH ===
+    # ========================================================================
     {'nombre': 'Louth Live', 'url': 'https://www.louthlive.ie/news/crime/', 'base': 'https://www.louthlive.ie', 'condado': 'Louth', 'categoria': 'local'},
-    #{'nombre': 'Drogheda Independent', 'url': 'https://www.droghedaindependent.ie/news/crime/', 'base': 'https://www.droghedaindependent.ie', 'condado': 'Louth', 'categoria': 'local'},
+    # {'nombre': 'Drogheda Independent', 'url': 'https://www.droghedaindependent.ie/news/crime/', 'base': 'https://www.droghedaindependent.ie', 'condado': 'Louth', 'categoria': 'local'},  # Fuente rota - pendiente revisión
+    {'nombre': 'LMFM', 'url': 'https://www.lmfm.ie/news/crime/', 'base': 'https://www.lmfm.ie', 'condado': 'Louth', 'categoria': 'local'},
     
-    # === SLIGO REGION ===
-    #{'nombre': 'Sligo Champion', 'url': 'https://www.sligochampion.ie/news/crime/', 'base': 'https://www.sligochampion.ie', 'condado': 'Sligo', 'categoria': 'local'},
+    # ========================================================================
+    # === SLIGO REGION - REGIÓN DE SLIGO ===
+    # ========================================================================
+    # {'nombre': 'Sligo Champion', 'url': 'https://www.sligochampion.ie/news/crime/', 'base': 'https://www.sligochampion.ie', 'condado': 'Sligo', 'categoria': 'local'},  # Fuente rota - pendiente revisión
+    {'nombre': 'Sligo Today', 'url': 'https://sligotoday.ie/category/crime/', 'base': 'https://sligotoday.ie', 'condado': 'Sligo', 'categoria': 'local'},
     {'nombre': 'Ocean FM', 'url': 'https://www.oceanfm.ie/news/crime/', 'base': 'https://www.oceanfm.ie', 'condado': 'Sligo', 'categoria': 'local'},
     
-    # === LAOIS REGION ===
+    # ========================================================================
+    # === LAOIS REGION - REGIÓN DE LAOIS ===
+    # ========================================================================
     {'nombre': 'Leinster Express', 'url': 'https://www.leinsterexpress.ie/news/crime/', 'base': 'https://www.leinsterexpress.ie', 'condado': 'Laois', 'categoria': 'local'},
     {'nombre': 'Laois Today', 'url': 'https://www.laoistoday.ie/category/crime/', 'base': 'https://www.laoistoday.ie', 'condado': 'Laois', 'categoria': 'local'},
     
-    # === OFFALY REGION ===
+    # ========================================================================
+    # === OFFALY REGION - REGIÓN DE OFFALY ===
+    # ========================================================================
     {'nombre': 'Offaly Independent', 'url': 'https://www.offalyindependent.ie/news/crime/', 'base': 'https://www.offalyindependent.ie', 'condado': 'Offaly', 'categoria': 'local'},
     {'nombre': 'Offaly Express', 'url': 'https://www.offalyexpress.ie/news/crime/', 'base': 'https://www.offalyexpress.ie', 'condado': 'Offaly', 'categoria': 'local'},
     
-    # === CAVAN REGION ===
+    # ========================================================================
+    # === CAVAN REGION - REGIÓN DE CAVAN ===
+    # ========================================================================
+    {'nombre': 'Cavan Echo', 'url': 'https://www.cavanecho.ie/category/crime/', 'base': 'https://www.cavanecho.ie', 'condado': 'Cavan', 'categoria': 'local'},
     {'nombre': 'Northern Sound', 'url': 'https://www.northernsound.ie/news/crime/', 'base': 'https://www.northernsound.ie', 'condado': 'Cavan', 'categoria': 'local'},
     
-    # === MONAGHAN REGION ===
-    #{'nombre': 'Northern Standard', 'url': 'https://northernstandard.ie/category/crime/', 'base': 'https://northernstandard.ie', 'condado': 'Monaghan', 'categoria': 'local'},
+    # ========================================================================
+    # === MONAGHAN REGION - REGIÓN DE MONAGHAN ===
+    # ========================================================================
+    {'nombre': 'Monaghan Live', 'url': 'https://monaghanlive.ie/category/crime/', 'base': 'https://monaghanlive.ie', 'condado': 'Monaghan', 'categoria': 'local'},
+    # {'nombre': 'Northern Standard', 'url': 'https://northernstandard.ie/category/crime/', 'base': 'https://northernstandard.ie', 'condado': 'Monaghan', 'categoria': 'local'},  # Fuente rota - pendiente revisión
     
-    # === ROSCOMMON REGION ===
+    # ========================================================================
+    # === ROSCOMMON REGION - REGIÓN DE ROSCOMMON ===
+    # ========================================================================
     {'nombre': 'Roscommon Herald', 'url': 'https://www.roscommonherald.ie/news/crime/', 'base': 'https://www.roscommonherald.ie', 'condado': 'Roscommon', 'categoria': 'local'},
     {'nombre': 'Roscommon People', 'url': 'https://roscommonpeople.ie/category/crime/', 'base': 'https://roscommonpeople.ie', 'condado': 'Roscommon', 'categoria': 'local'},
     
-    # === WICKLOW REGION ===
+    # ========================================================================
+    # === WICKLOW REGION - REGIÓN DE WICKLOW ===
+    # ========================================================================
     {'nombre': 'Wicklow News', 'url': 'https://wicklownews.net/category/crime/', 'base': 'https://wicklownews.net', 'condado': 'Wicklow', 'categoria': 'local'},
-    #{'nombre': 'Wicklow People', 'url': 'https://www.wicklowpeople.ie/news/crime/', 'base': 'https://www.wicklowpeople.ie', 'condado': 'Wicklow', 'categoria': 'local'},
+    # {'nombre': 'Wicklow People', 'url': 'https://www.wicklowpeople.ie/news/crime/', 'base': 'https://www.wicklowpeople.ie', 'condado': 'Wicklow', 'categoria': 'local'},  # Fuente rota - pendiente revisión
     
-    # === CARLOW REGION ===
+    # ========================================================================
+    # === CARLOW REGION - REGIÓN DE CARLOW ===
+    # ========================================================================
     {'nombre': 'Carlow Live', 'url': 'https://carlowlive.ie/category/crime/', 'base': 'https://carlowlive.ie', 'condado': 'Carlow', 'categoria': 'local'},
+    {'nombre': 'Carlow Nationalist', 'url': 'https://carlownationalist.ie/category/crime/', 'base': 'https://carlownationalist.ie', 'condado': 'Carlow', 'categoria': 'local'},
     
-    # === MEATH REGION ===
+    # ========================================================================
+    # === MEATH REGION - REGIÓN DE MEATH ===
+    # ========================================================================
     {'nombre': 'Meath Chronicle', 'url': 'https://www.meathchronicle.ie/news/crime/', 'base': 'https://www.meathchronicle.ie', 'condado': 'Meath', 'categoria': 'local'},
+    {'nombre': 'Meath Live', 'url': 'https://meathlive.ie/category/crime/', 'base': 'https://meathlive.ie', 'condado': 'Meath', 'categoria': 'local'},
     
-    # === LONGFORD REGION ===
+    # ========================================================================
+    # === LONGFORD REGION - REGIÓN DE LONGFORD ===
+    # ========================================================================
     {'nombre': 'Longford Leader', 'url': 'https://www.longfordleader.ie/news/crime/', 'base': 'https://www.longfordleader.ie', 'condado': 'Longford', 'categoria': 'local'},
     {'nombre': 'Longford Live', 'url': 'https://longfordlive.ie/category/crime/', 'base': 'https://longfordlive.ie', 'condado': 'Longford', 'categoria': 'local'},
     
-    # === LEITRIM REGION ===
+    # ========================================================================
+    # === LEITRIM REGION - REGIÓN DE LEITRIM ===
+    # ========================================================================
     {'nombre': 'Leitrim Observer', 'url': 'https://www.leitrimobserver.ie/news/crime/', 'base': 'https://www.leitrimobserver.ie', 'condado': 'Leitrim', 'categoria': 'local'},
-    #{'nombre': 'Leitrim Live', 'url': 'https://leitrimlive.ie/category/crime/', 'base': 'https://leitrimlive.ie', 'condado': 'Leitrim', 'categoria': 'local'},
+    # {'nombre': 'Leitrim Live', 'url': 'https://leitrimlive.ie/category/crime/', 'base': 'https://leitrimlive.ie', 'condado': 'Leitrim', 'categoria': 'local'},  # Fuente rota - pendiente revisión
     
-    # === NORTHERN IRELAND - BELFAST/ANTRIM ===
-    #{'nombre': 'Belfast Telegraph', 'url': 'https://www.belfasttelegraph.co.uk/news/crime/', 'base': 'https://www.belfasttelegraph.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
+    # ========================================================================
+    # === NORTHERN IRELAND - IRLANDA DEL NORTE ===
+    # ========================================================================
+    # ========================================================================
+    # === ANTRIM (BELFAST) - REGIÓN DE ANTRIM (BELFAST) ===
+    # ========================================================================
+    # {'nombre': 'Belfast Telegraph', 'url': 'https://www.belfasttelegraph.co.uk/news/crime/', 'base': 'https://www.belfasttelegraph.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},  # Fuente rota - pendiente revisión
     {'nombre': 'Irish News', 'url': 'https://www.irishnews.com/news/crime/', 'base': 'https://www.irishnews.com', 'condado': 'Antrim', 'categoria': 'ni'},
     {'nombre': 'Belfast Live', 'url': 'https://www.belfastlive.co.uk/news/belfast-crime/', 'base': 'https://www.belfastlive.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
     {'nombre': 'News Letter', 'url': 'https://www.newsletter.co.uk/news/crime', 'base': 'https://www.newsletter.co.uk', 'condado': 'Antrim', 'categoria': 'ni'},
     
-    # === NORTHERN IRELAND - DERRY ===
+    # ========================================================================
+    # === DERRY - REGIÓN DE DERRY ===
+    # ========================================================================
     {'nombre': 'Derry Journal', 'url': 'https://www.derryjournal.com/news/crime', 'base': 'https://www.derryjournal.com', 'condado': 'Derry', 'categoria': 'ni'},
     {'nombre': 'Derry Now', 'url': 'https://www.derrynow.com/news/crime', 'base': 'https://www.derrynow.com', 'condado': 'Derry', 'categoria': 'ni'},
+    {'nombre': 'Derry News', 'url': 'https://www.derrynews.net/crime/', 'base': 'https://www.derrynews.net', 'condado': 'Derry', 'categoria': 'ni'},
     
-    # === NORTHERN IRELAND - DOWN ===
+    # ========================================================================
+    # === DOWN - REGIÓN DE DOWN ===
+    # ========================================================================
     {'nombre': 'Down Recorder', 'url': 'https://www.thedownrecorder.co.uk/news/crime/', 'base': 'https://www.thedownrecorder.co.uk', 'condado': 'Down', 'categoria': 'ni'},
     {'nombre': 'Newry Reporter', 'url': 'https://www.newryreporter.com/news/crime/', 'base': 'https://www.newryreporter.com', 'condado': 'Down', 'categoria': 'ni'},
     
-    # === NORTHERN IRELAND - TYRONE ===
-    #{'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},
+    # ========================================================================
+    # === TYRONE - REGIÓN DE TYRONE ===
+    # ========================================================================
+    {'nombre': 'Tyrone Times', 'url': 'https://www.tyronetimes.co.uk/news/crime', 'base': 'https://www.tyronetimes.co.uk', 'condado': 'Tyrone', 'categoria': 'ni'},
+    # {'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},  # Fuente rota - pendiente revisión
     
-    # === NORTHERN IRELAND - ARMAGH ===
+    # ========================================================================
+    # === ARMAGH - REGIÓN DE ARMAGH ===
+    # ========================================================================
     {'nombre': 'Armagh I', 'url': 'https://armaghi.com/category/crime/', 'base': 'https://armaghi.com', 'condado': 'Armagh', 'categoria': 'ni'},
     {'nombre': 'Lurgan Mail', 'url': 'https://www.lurganmail.co.uk/news/crime', 'base': 'https://www.lurganmail.co.uk', 'condado': 'Armagh', 'categoria': 'ni'},
     
-    # === NORTHERN IRELAND - FERMANAGH ===
+    # ========================================================================
+    # === FERMANAGH - REGIÓN DE FERMANAGH ===
+    # ========================================================================
+    {'nombre': 'Fermanagh Herald', 'url': 'https://www.fermanaghherald.com/category/crime/', 'base': 'https://www.fermanaghherald.com', 'condado': 'Fermanagh', 'categoria': 'ni'},
     {'nombre': 'Impartial Reporter', 'url': 'https://www.impartialreporter.com/news/crime/', 'base': 'https://www.impartialreporter.com', 'condado': 'Fermanagh', 'categoria': 'ni'},
 ]
 
-# Lista completa de condados irlandeses
+# ============================================================================
+# ============================================================================
+# LISTA COMPLETA DE CONDADOS IRLANDESES (32 CONDADOS)
+# ============================================================================
+# ============================================================================
+
 CONDADOS_IRLANDA = [
+    # República de Irlanda (26 condados)
     'Dublin', 'Cork', 'Galway', 'Limerick', 'Waterford', 'Kerry', 'Clare', 'Donegal',
     'Mayo', 'Wexford', 'Kildare', 'Tipperary', 'Westmeath', 'Louth', 'Sligo', 'Laois',
     'Offaly', 'Cavan', 'Monaghan', 'Roscommon', 'Wicklow', 'Carlow', 'Meath', 'Longford',
-    'Leitrim', 'Antrim', 'Derry', 'Down', 'Tyrone', 'Armagh', 'Fermanagh', 'Ireland'
+    'Leitrim',
+    # Irlanda del Norte (6 condados)
+    'Antrim', 'Derry', 'Down', 'Tyrone', 'Armagh', 'Fermanagh'
 ]
 
 # ============================================================================
-# PALABRAS CLAVE PARA DETECCIÓN DE CRÍMENES
+# ============================================================================
+# PALABRAS CLAVE PARA DETECCIÓN DE CRÍMENES - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 PALABRAS_CLAVE_CRIMEN = [
-    # Drug trafficking and seizures
+    # ========================================================================
+    # Drug trafficking and seizures - Narcotráfico e incautaciones
+    # ========================================================================
     'drugs', 'cocaine', 'heroin', 'cannabis', 'weed', 'meth', 'methamphetamine',
     'ecstasy', 'mdma', 'benzos', 'benzodiazepines', 'oxycodone', 'fentanyl',
     'trafficking', 'drug bust', 'seizure', 'cocaine seizure', 'drugs worth',
     'kilos of cocaine', 'drug gang', 'cartel', 'drug lord', 'narco',
     
-    # Gang violence and feuds
+    # ========================================================================
+    # Gang violence and feuds - Violencia de bandas y disputas
+    # ========================================================================
     'kinahan', 'hutch', 'kinahan cartel', 'hutch feud', 'fearon', 'greencastle',
     'gang', 'feud', 'gangland', 'gangland shooting', 'gang violence',
     
-    # Shootings and murders
+    # ========================================================================
+    # Shootings and murders - Tiroteos y asesinatos
+    # ========================================================================
     'shooting', 'gun attack', 'murder', 'homicide', 'killed', 'fatal shooting',
     'dead', 'death', 'body found', 'suspicious death', 'attempted murder',
     
-    # Assaults and violent crimes
+    # ========================================================================
+    # Assaults and violent crimes - Agresiones y crímenes violentos
+    # ========================================================================
     'stabbed', 'stabbing', 'assault', 'attack', 'violent', 'brawl', 'fight',
     'beat', 'beaten', 'injured', 'hospitalized', 'serious injury',
     
-    # Weapons
+    # ========================================================================
+    # Weapons - Armas
+    # ========================================================================
     'firearm', 'weapon', 'gun', 'pistol', 'rifle', 'shotgun', 'ammunition',
     'grenade', 'explosive', 'knife', 'blade', 'machete',
     
-    # Garda / Police operations
+    # ========================================================================
+    # Garda / Police operations - Operaciones policiales
+    # ========================================================================
     'garda', 'gardaí', 'gardai', 'gsoc', 'arrested', 'detained', 'charged',
     'convicted', 'sentenced', 'operation', 'raid', 'search', 'investigation',
     'crackdown', 'task force', 'undercover', 'surveillance',
     
-    # Organized crime
+    # ========================================================================
+    # Organized crime - Crimen organizado
+    # ========================================================================
     'mafia', 'organized crime', 'criminal gang', 'racketeering', 'money laundering',
-    'extortion', 'kidnapping', 'disappeared', 'paramilitary', 'dissident', 'criminal',
+    'extortion', 'kidnapping', 'disappeared', 'paramilitary', 'dissident',
     
-    # Courts and justice
+    # ========================================================================
+    # Courts and justice - Tribunales y justicia
+    # ========================================================================
     'court', 'trial', 'judge', 'jury', 'verdict', 'sentence', 'prison', 'jail',
     'custody', 'remand', 'bail', 'hearing', 'conviction', 'appeal',
     
-    # Other crime related
+    # ========================================================================
+    # Other crime related - Otros términos relacionados con crímenes
+    # ========================================================================
     'crime scene', 'forensic', 'evidence', 'witness', 'victim', 'suspect',
-    'manhunt', 'escape', 'fugitive', 'wanted', 'alert'
+    'manhunt', 'escape', 'fugitive', 'wanted', 'alert', 'crime', 'criminal',
+    'offender', 'felon', 'convict', 'inmate', 'detainee', 'prisoner'
 ]
 
 # ============================================================================
-# TIPOS DE CRIMEN CON ICONOS Y COLORES
+# ============================================================================
+# TIPOS DE CRIMEN CON ICONOS Y COLORES - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 TIPOS_CRIMEN = {
@@ -786,7 +1017,9 @@ TIPOS_CRIMEN = {
 }
 
 # ============================================================================
-# CLASE GESTOR DE DATOS
+# ============================================================================
+# CLASE GESTOR DE DATOS - VERSIÓN COMPLETA CON GUARDADO FORZADO
+# ============================================================================
 # ============================================================================
 
 class GestorDatos:
@@ -809,96 +1042,109 @@ class GestorDatos:
         return {'incidentes': [], 'ultima_actualizacion': None, 'estadisticas_historicas': {}}
     
     def guardar(self):
-        """Guarda los datos en el archivo JSON"""
-        with self.lock:
-            self.datos['ultima_actualizacion'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-            
-            # Crear backup antes de guardar
-            if os.path.exists(self.archivo):
-                try:
-                    with open(ARCHIVO_BACKUP, 'w', encoding='utf-8') as f:
-                        json.dump(self.datos, f, indent=2, ensure_ascii=False)
-                except:
-                    pass
-            
-            with open(self.archivo, 'w', encoding='utf-8') as f:
+        """Guarda los datos en el archivo JSON con backup automático"""
+        try:
+            with self.lock:
+                self.datos['ultima_actualizacion'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                
+                # Crear backup antes de guardar
+                if os.path.exists(self.archivo):
+                    try:
+                        with open(ARCHIVO_BACKUP, 'w', encoding='utf-8') as f:
+                            json.dump(self.datos, f, indent=2, ensure_ascii=False)
+                    except:
+                        pass
+                
+                with open(self.archivo, 'w', encoding='utf-8') as f:
+                    json.dump(self.datos, f, indent=2, ensure_ascii=False)
+                return True
+        except Exception as e:
+            cprint(f"⚠️ Error guardando datos: {e}", 'yellow')
+            return False
+    
+    def guardar_backup(self):
+        """Guarda una copia de seguridad manual"""
+        try:
+            with open(ARCHIVO_BACKUP, 'w', encoding='utf-8') as f:
                 json.dump(self.datos, f, indent=2, ensure_ascii=False)
+            return True
+        except:
+            return False
     
     def agregar_incidentes(self, nuevos):
-        """Agrega nuevos incidentes evitando duplicados"""
+        """Agrega nuevos incidentes evitando duplicados y guarda automáticamente"""
         if not nuevos:
             return 0
         
-        with self.lock:
-            ids_existentes = {inc['id'] for inc in self.datos['incidentes']}
-            contador = 0
-            
-            for n in nuevos:
-                if n['id'] not in ids_existentes:
-                    self.datos['incidentes'].append(n)
-                    ids_existentes.add(n['id'])
-                    contador += 1
-            
-            if contador > 0:
-                # Actualizar estadísticas históricas
-                self._actualizar_historicas(nuevos)
-                self.guardar()
-            
-            return contador
-    
-    def _actualizar_historicas(self, nuevos):
-        """Actualiza las estadísticas históricas"""
-        historicas = self.datos.get('estadisticas_historicas', {})
-        
-        for inc in nuevos:
-            fecha = inc.get('fecha', '')
-            if fecha and len(fecha) >= 7:
-                mes = fecha[:7]
-                tipo = inc.get('tipo', 'other')
-                condado = inc.get('condado', 'Unknown')
+        try:
+            with self.lock:
+                ids_existentes = {inc['id'] for inc in self.datos['incidentes']}
+                contador = 0
                 
-                if mes not in historicas:
-                    historicas[mes] = {'total': 0, 'tipos': {}, 'condados': {}}
+                for n in nuevos:
+                    if n['id'] not in ids_existentes:
+                        self.datos['incidentes'].append(n)
+                        ids_existentes.add(n['id'])
+                        contador += 1
                 
-                historicas[mes]['total'] += 1
-                historicas[mes]['tipos'][tipo] = historicas[mes]['tipos'].get(tipo, 0) + 1
-                historicas[mes]['condados'][condado] = historicas[mes]['condados'].get(condado, 0) + 1
-        
-        self.datos['estadisticas_historicas'] = historicas
+                if contador > 0:
+                    self.guardar()
+                    self.guardar_backup()
+                
+                return contador
+        except Exception as e:
+            cprint(f"⚠️ Error agregando incidentes: {e}", 'yellow')
+            return 0
     
     def detectar_tipo(self, texto):
         """Detecta el tipo de crimen basado en el texto"""
         tl = texto.lower()
         
-        # Detectar drogas
+        # ================================================================
+        # Detectar drogas - alta prioridad
+        # ================================================================
         if any(p in tl for p in ['cocaine', 'heroin', 'drugs', 'cannabis', 'weed', 'meth', 'ecstasy', 'trafficking', 'seizure', 'bust', 'kilos']):
             return 'drugs'
         
+        # ================================================================
         # Detectar violencia de bandas
+        # ================================================================
         if any(p in tl for p in ['kinahan', 'hutch', 'gang', 'feud', 'cartel', 'gangland']):
             return 'gang_violence'
         
+        # ================================================================
         # Detectar asesinatos
+        # ================================================================
         if any(p in tl for p in ['murder', 'homicide', 'killed', 'fatal', 'body found', 'suspicious death']):
             return 'murder'
         
+        # ================================================================
         # Detectar agresiones
+        # ================================================================
         if any(p in tl for p in ['assault', 'stabbed', 'stabbing', 'attack', 'violent', 'brawl', 'fight']):
             return 'assault'
         
+        # ================================================================
         # Detectar robos
+        # ================================================================
         if any(p in tl for p in ['robbery', 'theft', 'burglary', 'raid', 'heist']):
             return 'robbery'
         
+        # ================================================================
         # Detectar crimen organizado
+        # ================================================================
         if any(p in tl for p in ['mafia', 'organized crime', 'racketeering', 'money laundering', 'extortion']):
             return 'organized_crime'
         
+        # ================================================================
         # Detectar operaciones de Garda
+        # ================================================================
         if any(p in tl for p in ['garda', 'gardaí', 'arrested', 'operation', 'raid', 'crackdown', 'task force']):
             return 'garda_op'
         
+        # ================================================================
         # Detectar armas
+        # ================================================================
         if any(p in tl for p in ['firearm', 'weapon', 'gun', 'pistol', 'rifle', 'shotgun', 'knife']):
             return 'weapon'
         
@@ -919,9 +1165,7 @@ class GestorDatos:
             'ultimos_90dias': 0,
             'tendencia': defaultdict(int),
             'tendencia_tipos': defaultdict(lambda: defaultdict(int)),
-            'top_keywords': defaultdict(int),
-            'incidentes_por_hora': defaultdict(int),
-            'incidentes_por_dia_semana': defaultdict(int)
+            'top_keywords': defaultdict(int)
         }
         
         hoy = datetime.now()
@@ -930,19 +1174,27 @@ class GestorDatos:
         hace_90d = (hoy - timedelta(days=90)).strftime('%Y-%m-%d')
         
         for inc in incidentes:
+            # ================================================================
             # Condados
+            # ================================================================
             if inc.get('condado'):
                 stats['condados'][inc['condado']] += 1
             
+            # ================================================================
             # Tipos
+            # ================================================================
             if inc.get('tipo'):
                 stats['tipos'][inc['tipo']] += 1
             
+            # ================================================================
             # Fuentes
+            # ================================================================
             if inc.get('fuente'):
                 stats['fuentes'][inc['fuente']] += 1
             
+            # ================================================================
             # Fechas
+            # ================================================================
             fecha_str = inc.get('fecha', '')
             if fecha_str:
                 if fecha_str >= hace_7d:
@@ -958,15 +1210,10 @@ class GestorDatos:
                     
                     if inc.get('tipo'):
                         stats['tendencia_tipos'][mes][inc['tipo']] += 1
-                
-                # Análisis por hora y día
-                try:
-                    fecha_obj = datetime.strptime(fecha_str, '%Y-%m-%d')
-                    stats['incidentes_por_dia_semana'][fecha_obj.strftime('%A')] += 1
-                except:
-                    pass
             
+            # ================================================================
             # Extraer palabras clave del título
+            # ================================================================
             titulo = inc.get('titulo', '').lower()
             for keyword in PALABRAS_CLAVE_CRIMEN[:50]:
                 if keyword in titulo:
@@ -1077,7 +1324,7 @@ class GestorDatos:
             pct = (count / stats['total'] * 100) if stats['total'] > 0 else 0
             icono = TIPOS_CRIMEN.get(crime_type, {}).get('icono', '❓')
             nombre = TIPOS_CRIMEN.get(crime_type, {}).get('nombre', crime_type)
-            html += f"<tr><td>{icono} {nombre}</td><td>{count}</td><td>{pct:.1f}%</td></tr>"
+            html += f"</td><td>{icono} {nombre}</td><td>{count}</td><td>{pct:.1f}%</td></tr>"
         
         html += f"""</table>
     
@@ -1101,7 +1348,9 @@ class GestorDatos:
         return html
 
 # ============================================================================
-# CLASE VERIFICADOR DE FUENTES CON AUTO-DISCOVERY
+# ============================================================================
+# CLASE VERIFICADOR DE FUENTES CON AUTO-DISCOVERY - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 class VerificadorFuentes:
@@ -1129,7 +1378,9 @@ class VerificadorFuentes:
         """Verifica una sola fuente, opcionalmente aplicando auto-discovery"""
         nombre = fuente['nombre']
         
+        # ================================================================
         # Verificar usando la URL actual
+        # ================================================================
         for intento in range(MAX_INTENTOS):
             try:
                 headers = {
@@ -1150,7 +1401,9 @@ class VerificadorFuentes:
             except Exception as e:
                 time.sleep(get_random_delay())
         
+        # ================================================================
         # Si falló y está habilitado el auto-discovery, buscar URL alternativa
+        # ================================================================
         if aplicar_discovery:
             nueva_url = self.discoverer.discover_url(fuente)
             if nueva_url != fuente['url']:
@@ -1221,7 +1474,9 @@ class VerificadorFuentes:
         return verificadas
 
 # ============================================================================
-# CLASE EXTRACTOR DE NOTICIAS
+# ============================================================================
+# CLASE EXTRACTOR DE NOTICIAS - VERSIÓN COMPLETA CON GUARDADO POR FUENTE
+# ============================================================================
 # ============================================================================
 
 class ExtractorNoticias:
@@ -1285,7 +1540,9 @@ class ExtractorNoticias:
         url_base = fuente['url']
         
         for pagina in range(1, paginas + 1):
+            # ================================================================
             # Construir URL de paginación
+            # ================================================================
             if pagina == 1:
                 url = url_base
             else:
@@ -1318,7 +1575,9 @@ class ExtractorNoticias:
                 if response:
                     soup = BeautifulSoup(response.text, 'html.parser')
                     
+                    # ========================================================
                     # Buscar elementos que contengan noticias
+                    # ========================================================
                     elementos = []
                     
                     # Artículos
@@ -1345,7 +1604,9 @@ class ExtractorNoticias:
                         
                         # Verificar si contiene palabras clave de crimen
                         if any(palabra in texto_lower for palabra in PALABRAS_CLAVE_CRIMEN):
+                            # ====================================================
                             # Extraer fecha si está disponible
+                            # ====================================================
                             fecha_elem = soup.find('time')
                             fecha = datetime.now().strftime('%Y-%m-%d')
                             
@@ -1360,7 +1621,9 @@ class ExtractorNoticias:
                                 if match:
                                     fecha = match.group()[:10]
                             
+                            # ====================================================
                             # Determinar condado
+                            # ====================================================
                             condado = fuente['condado']
                             for c in CONDADOS_IRLANDA:
                                 if c.lower() in texto_lower:
@@ -1396,7 +1659,7 @@ class ExtractorNoticias:
         return incidentes
     
     def extraer_todas(self, paginas=PAGINAS_BUSQUEDA):
-        """Extrae incidentes de todas las fuentes activas"""
+        """Extrae incidentes de todas las fuentes activas - CON GUARDADO POR FUENTE"""
         cprint(f"\n{'='*80}", 'red', bold=True)
         cprint(f"🔪 KELTIC KRAKEN - ESCANEANDO IRLANDA", 'red', bold=True, bg=True)
         cprint(f"{'='*80}", 'red', bold=True)
@@ -1409,8 +1672,15 @@ class ExtractorNoticias:
             cprint(f"\n⚠️ {t('sin_datos')}", 'yellow')
             return todas_las_noticias
         
+        # ================================================================
+        # Crear un gestor temporal para guardar después de cada fuente
+        # ================================================================
+        gestor_local = GestorDatos()
+        
         for idx, fuente in enumerate(fuentes_activas, 1):
+            # ================================================================
             # Barra de progreso
+            # ================================================================
             porcentaje = (idx / total_activas) * 100
             barra_len = 40
             filled = int(barra_len * idx / total_activas)
@@ -1422,12 +1692,23 @@ class ExtractorNoticias:
             cprint(f"   📍 Condado: {fuente['condado']} | 🌐 URL: {fuente['url'][:50]}...", 'gray', dim=True)
             
             incidentes_fuente = self.extraer_de_fuente(fuente, paginas)
-            todas_las_noticias.extend(incidentes_fuente)
-            cprint(f"   📊 Total en esta fuente: {len(incidentes_fuente)} incidentes", 'cyan')
+            
+            # ================================================================
+            # GUARDADO FORZADO DESPUÉS DE CADA FUENTE (CRÍTICO)
+            # ================================================================
+            if incidentes_fuente:
+                agregados = gestor_local.agregar_incidentes(incidentes_fuente)
+                todas_las_noticias.extend(incidentes_fuente)
+                cprint(f"   📊 Total en esta fuente: {len(incidentes_fuente)} incidentes ({agregados} nuevos)", 'cyan')
+                cprint(f"   💾 Datos guardados automáticamente", 'green')
+            else:
+                cprint(f"   📊 Total en esta fuente: 0 incidentes", 'gray')
         
         print()  # Línea nueva después de la barra
         
+        # ================================================================
         # Eliminar duplicados por ID
+        # ================================================================
         incidentes_unicos = {}
         for noticia in todas_las_noticias:
             if noticia['id'] not in incidentes_unicos:
@@ -1440,12 +1721,15 @@ class ExtractorNoticias:
         cprint(f"   Incidentes encontrados: {len(resultado)}", 'white')
         cprint(f"   Fuentes activas: {total_activas}", 'white')
         cprint(f"   Auto-discovery aplicado automáticamente", 'cyan')
+        cprint(f"   💾 Datos guardados automáticamente después de CADA fuente", 'green')
         cprint(f"{'='*80}", 'green', bold=True)
         
         return resultado
 
 # ============================================================================
-# INTERFAZ WEB CON GRÁFICOS
+# ============================================================================
+# INTERFAZ WEB CON GRÁFICOS Y PAGINACIÓN - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 app = Flask(__name__)
@@ -1460,7 +1744,6 @@ HTML_TEMPLATE = '''
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>🔪 KELTIC KRAKEN - Ireland Crime Intelligence</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
@@ -1529,7 +1812,7 @@ HTML_TEMPLATE = '''
             border-radius: 15px;
             text-align: center;
             border-left: 5px solid #ff4444;
-            transition: all 0.3s ease;
+            transition: transform 0.3s ease;
         }
         
         .stat-card:hover {
@@ -1660,6 +1943,38 @@ HTML_TEMPLATE = '''
             border-radius: 20px;
         }
         
+        /* Paginación */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .page-btn {
+            background: #222;
+            color: #ff4444;
+            padding: 8px 16px;
+            border-radius: 20px;
+            text-decoration: none;
+            border: 1px solid #ff4444;
+            transition: all 0.3s ease;
+            min-width: 40px;
+            text-align: center;
+        }
+        
+        .page-btn:hover, .page-btn.active {
+            background: #ff4444;
+            color: #000;
+        }
+        
+        .page-info {
+            color: #888;
+            margin: 0 15px;
+        }
+        
         /* Footer */
         .footer {
             text-align: center;
@@ -1721,10 +2036,10 @@ HTML_TEMPLATE = '''
         </div>
         
         <div class="filtros">
-            <a href="/" class="filtro-btn {% if filtro == 'todo' %}active{% endif %}">📅 ALL</a>
-            <a href="/filtro/7d" class="filtro-btn {% if filtro == '7d' %}active{% endif %}">⚡ 7 DAYS</a>
-            <a href="/filtro/30d" class="filtro-btn {% if filtro == '30d' %}active{% endif %}">🔥 30 DAYS</a>
-            <a href="/filtro/90d" class="filtro-btn {% if filtro == '90d' %}active{% endif %}">📊 90 DAYS</a>
+            <a href="{{ url_for('index_paginada', page=1, filtro='todo') }}" class="filtro-btn {% if filtro == 'todo' %}active{% endif %}">📅 ALL</a>
+            <a href="{{ url_for('index_paginada', page=1, filtro='7d') }}" class="filtro-btn {% if filtro == '7d' %}active{% endif %}">⚡ 7 DAYS</a>
+            <a href="{{ url_for('index_paginada', page=1, filtro='30d') }}" class="filtro-btn {% if filtro == '30d' %}active{% endif %}">🔥 30 DAYS</a>
+            <a href="{{ url_for('index_paginada', page=1, filtro='90d') }}" class="filtro-btn {% if filtro == '90d' %}active{% endif %}">📊 90 DAYS</a>
         </div>
         
         <div class="charts-row">
@@ -1750,8 +2065,8 @@ HTML_TEMPLATE = '''
         </div>
         
         <div class="chart-container">
-            <div class="chart-title">🔪 LATEST INCIDENTS ({{ incidentes|length }})</div>
-            {% for inc in incidentes[:25] %}
+            <div class="chart-title">🔪 LATEST INCIDENTS - {{ t('page') }} {{ pagina }} {{ t('of') }} {{ total_paginas }}</div>
+            {% for inc in incidentes_pagina %}
             <div class="incidente-card">
                 <div class="incidente-titulo">{{ inc.titulo }}</div>
                 <div class="incidente-meta">
@@ -1762,6 +2077,34 @@ HTML_TEMPLATE = '''
                 </div>
             </div>
             {% endfor %}
+            
+            <!-- ======================================================== -->
+            <!-- PAGINACIÓN COMPLETA -->
+            <!-- ======================================================== -->
+            <div class="pagination">
+                {% if pagina > 1 %}
+                    <a href="{{ url_for('index_paginada', page=pagina-1, filtro=filtro) }}" class="page-btn">◀ PREVIOUS</a>
+                {% endif %}
+                
+                {% for p in range(1, total_paginas + 1) %}
+                    {% if p == 1 or p == total_paginas or (p >= pagina-2 and p <= pagina+2) %}
+                        {% if p == pagina %}
+                            <span class="page-btn active">{{ p }}</span>
+                        {% else %}
+                            <a href="{{ url_for('index_paginada', page=p, filtro=filtro) }}" class="page-btn">{{ p }}</a>
+                        {% endif %}
+                    {% elif p == pagina-3 or p == pagina+3 %}
+                        <span class="page-info">...</span>
+                    {% endif %}
+                {% endfor %}
+                
+                {% if pagina < total_paginas %}
+                    <a href="{{ url_for('index_paginada', page=pagina+1, filtro=filtro) }}" class="page-btn">NEXT ▶</a>
+                {% endif %}
+            </div>
+            <div class="page-info" style="text-align: center; margin-top: 10px;">
+                Mostrando {{ (pagina-1)*ITEMS_POR_PAGINA + 1 }} a {{ min(pagina*ITEMS_POR_PAGINA, total_incidentes) }} de {{ total_incidentes }} incidentes
+            </div>
         </div>
         
         <div class="footer">
@@ -1888,12 +2231,47 @@ HTML_TEMPLATE = '''
 </html>
 '''
 
+# ============================================================================
+# ============================================================================
+# RUTAS DE FLASK CON PAGINACIÓN - VERSIÓN COMPLETA
+# ============================================================================
+# ============================================================================
+
 @app.route('/')
-def home():
+def index():
+    return index_paginada(1, 'todo')
+
+@app.route('/page/<int:page>')
+def index_paginada(page=1, filtro='todo'):
     global gestor_global, fuentes_global
-    incidentes = gestor_global.datos['incidentes']
-    stats = gestor_global.estadisticas()
     
+    # ================================================================
+    # Obtener todos los incidentes
+    # ================================================================
+    incidentes = gestor_global.datos['incidentes']
+    
+    # ================================================================
+    # Aplicar filtros de tiempo
+    # ================================================================
+    if filtro == '7d':
+        limite = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
+        incidentes = [i for i in incidentes if i.get('fecha', '') >= limite]
+    elif filtro == '30d':
+        limite = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
+        incidentes = [i for i in incidentes if i.get('fecha', '') >= limite]
+    elif filtro == '90d':
+        limite = (datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')
+        incidentes = [i for i in incidentes if i.get('fecha', '') >= limite]
+    
+    # ================================================================
+    # Estadísticas
+    # ================================================================
+    stats = gestor_global.estadisticas(incidentes)
+    periodicos_activos = len([f for f in fuentes_global if f.get('activo', True)])
+    
+    # ================================================================
+    # Preparar datos para gráficos
+    # ================================================================
     condados_labels = list(stats['condados'].keys())
     condados_data = list(stats['condados'].values())
     tipos_labels = [f"{TIPOS_CRIMEN.get(t, {}).get('icono', '❓')} {t.upper()}" for t in stats['tipos'].keys()]
@@ -1907,43 +2285,29 @@ def home():
     fuentes_labels = list(fuentes_top.keys())
     fuentes_data = list(fuentes_top.values())
     
-    periodicos_activos = len([f for f in fuentes_global if f.get('activo', True)])
+    # ================================================================
+    # PAGINACIÓN
+    # ================================================================
+    total_incidentes = len(incidentes)
+    total_paginas = max(1, (total_incidentes + ITEMS_POR_PAGINA - 1) // ITEMS_POR_PAGINA)
+    pagina = max(1, min(page, total_paginas))
+    inicio = (pagina - 1) * ITEMS_POR_PAGINA
+    fin = inicio + ITEMS_POR_PAGINA
+    incidentes_pagina = incidentes[::-1][inicio:fin]  # Invertir para mostrar más recientes primero
     
     return render_template_string(HTML_TEMPLATE, 
         version=VERSION, puerto=PUERTO, stats=stats,
-        incidentes=incidentes[::-1], periodicos_activos=periodicos_activos, filtro='todo',
+        incidentes_pagina=incidentes_pagina, periodicos_activos=periodicos_activos, 
+        filtro=filtro, pagina=pagina, total_paginas=total_paginas, total_incidentes=total_incidentes,
         condados_labels=condados_labels, condados_data=condados_data,
         tipos_labels=tipos_labels, tipos_data=tipos_data,
         tendencia_labels=tendencia_labels, tendencia_data=tendencia_data,
-        fuentes_labels=fuentes_labels, fuentes_data=fuentes_data)
+        fuentes_labels=fuentes_labels, fuentes_data=fuentes_data,
+        ITEMS_POR_PAGINA=ITEMS_POR_PAGINA, t=t, min=min)
 
 @app.route('/filtro/<periodo>')
-def filtro(periodo):
-    global gestor_global, fuentes_global
-    incidentes = gestor_global.datos['incidentes']
-    
-    if periodo == '7d':
-        hace = (datetime.now() - timedelta(days=7)).strftime('%Y-%m-%d')
-        incidentes = [i for i in incidentes if i.get('fecha', '') >= hace]
-    elif periodo == '30d':
-        hace = (datetime.now() - timedelta(days=30)).strftime('%Y-%m-%d')
-        incidentes = [i for i in incidentes if i.get('fecha', '') >= hace]
-    elif periodo == '90d':
-        hace = (datetime.now() - timedelta(days=90)).strftime('%Y-%m-%d')
-        incidentes = [i for i in incidentes if i.get('fecha', '') >= hace]
-    
-    stats = gestor_global.estadisticas(incidentes)
-    periodicos_activos = len([f for f in fuentes_global if f.get('activo', True)])
-    
-    return render_template_string(HTML_TEMPLATE,
-        version=VERSION, puerto=PUERTO, stats=stats,
-        incidentes=incidentes[::-1], periodicos_activos=periodicos_activos, filtro=periodo,
-        condados_labels=list(stats['condados'].keys()), condados_data=list(stats['condados'].values()),
-        tipos_labels=[f"{TIPOS_CRIMEN.get(t, {}).get('icono', '❓')} {t.upper()}" for t in stats['tipos'].keys()],
-        tipos_data=list(stats['tipos'].values()),
-        tendencia_labels=list(stats['tendencia'].keys())[-12:], tendencia_data=list(stats['tendencia'].values())[-12:],
-        fuentes_labels=list(dict(sorted(stats['fuentes'].items(), key=lambda x: x[1], reverse=True)[:5]).keys()),
-        fuentes_data=list(dict(sorted(stats['fuentes'].items(), key=lambda x: x[1], reverse=True)[:5]).values()))
+def filtro_route(periodo):
+    return index_paginada(1, periodo)
 
 @app.route('/actualizar', methods=['POST'])
 def actualizar():
@@ -1952,52 +2316,72 @@ def actualizar():
     cprint(f"🔪 {t('actualizando')}", 'red', bold=True, bg=True)
     cprint(f"{'='*80}", 'red', bold=True)
     
+    # ================================================================
+    # Verificar fuentes con auto-discovery
+    # ================================================================
     verificador = VerificadorFuentes()
     fuentes_verificadas = verificador.verificar_todas(fuentes_global)
     fuentes_global = fuentes_verificadas
     
+    # ================================================================
+    # Extraer noticias (ya guarda automáticamente después de cada fuente)
+    # ================================================================
     extractor = ExtractorNoticias(fuentes_verificadas)
     nuevas_noticias = extractor.extraer_todas(paginas=PAGINAS_BUSQUEDA)
-    agregadas = gestor_global.agregar_incidentes(nuevas_noticias)
     
+    # ================================================================
+    # Los incidentes ya se guardaron dentro de extraer_todas()
+    # Solo mostramos el resumen final
+    # ================================================================
     cprint(f"\n{'='*80}", 'green', bold=True)
-    cprint(f"✅ {agregadas} NUEVOS INCIDENTES REGISTRADOS", 'green', bold=True, bg=True)
+    cprint(f"✅ PROCESO COMPLETADO", 'green', bold=True, bg=True)
     cprint(f"{'='*80}", 'green', bold=True)
     
-    return home()
+    return index_paginada(1, 'todo')
 
 @app.route('/exportar/json')
 def exportar_json():
     global gestor_global
-    return Response(gestor_global.exportar_json(), mimetype='application/json', headers={'Content-Disposition': 'attachment; filename=keltic_kraken_export.json'})
+    return Response(gestor_global.exportar_json(), 
+        mimetype='application/json', 
+        headers={'Content-Disposition': 'attachment; filename=keltic_kraken_export.json'})
 
 @app.route('/exportar/csv')
 def exportar_csv():
     global gestor_global
-    return Response(gestor_global.exportar_csv(), mimetype='text/csv', headers={'Content-Disposition': 'attachment; filename=keltic_kraken_export.csv'})
+    return Response(gestor_global.exportar_csv(), 
+        mimetype='text/csv', 
+        headers={'Content-Disposition': 'attachment; filename=keltic_kraken_export.csv'})
 
 @app.route('/exportar/html')
 def exportar_html():
     global gestor_global
-    return Response(gestor_global.exportar_html(), mimetype='text/html', headers={'Content-Disposition': 'attachment; filename=keltic_kraken_report.html'})
+    return Response(gestor_global.exportar_html(), 
+        mimetype='text/html', 
+        headers={'Content-Disposition': 'attachment; filename=keltic_kraken_report.html'})
 
 # ============================================================================
-# MENÚ PRINCIPAL DE TERMINAL
+# ============================================================================
+# MENÚ PRINCIPAL DE TERMINAL - VERSIÓN COMPLETA
+# ============================================================================
 # ============================================================================
 
 def mostrar_menu_principal():
     """Muestra el menú principal con diseño profesional"""
+    stats = gestor_global.estadisticas()
+    fuentes_activas = len([f for f in fuentes_global if f.get('activo', True)])
+    
     print(f"""
 {Color.RED}╔{'═' * 70}╗{Color.RESET}
 {Color.RED}║{Color.BOLD}{Color.WHITE}  🔪 {t('app_name')}{' ' * 44}{Color.RED}║{Color.RESET}
 {Color.RED}╠{'═' * 70}╣{Color.RESET}
-{Color.RED}║{Color.CYAN}  📊 {t('stats_total')}: {gestor_global.estadisticas()['total']} {t('incidentes')}{' ' * 35}{Color.RED}║{Color.RESET}
-{Color.RED}║{Color.YELLOW}  📰 {t('fuentes')}: {len([f for f in fuentes_global if f.get('activo', True)])} de {len(fuentes_global)}{' ' * 40}{Color.RED}║{Color.RESET}
-{Color.RED}║{Color.GREEN}  🏴 {t('condados')}: {len(gestor_global.estadisticas()['condados'])}{' ' * 44}{Color.RED}║{Color.RESET}
+{Color.RED}║{Color.CYAN}  📊 {t('stats_total')}: {stats['total']} {t('incidentes')}{' ' * 35}{Color.RED}║{Color.RESET}
+{Color.RED}║{Color.YELLOW}  📰 {t('fuentes')}: {fuentes_activas} de {len(fuentes_global)}{' ' * 40}{Color.RED}║{Color.RESET}
+{Color.RED}║{Color.GREEN}  🏴 {t('condados')}: {len(stats['condados'])}{' ' * 44}{Color.RED}║{Color.RESET}
 {Color.RED}╚{'═' * 70}╝{Color.RESET}
 
 {Color.YELLOW}┌{'─' * 50}┐{Color.RESET}
-{Color.YELLOW}│{Color.CYAN}  📋 {t('menu_title')}{' ' * 30}{Color.YELLOW}│{Color.RESET}
+{Color.YELLOW}│{Color.CYAN}  📋 {t('menu_title')}{' ' * 33}{Color.YELLOW}│{Color.RESET}
 {Color.YELLOW}├{'─' * 50}┤{Color.RESET}
 {Color.YELLOW}│{Color.GREEN}  [1] 🔍 {t('cmd_buscar')}{' ' * 4}{Color.YELLOW}│{Color.RESET}
 {Color.YELLOW}│{Color.GREEN}  [2] 📊 {t('cmd_analisis')}{' ' * 11}{Color.YELLOW}│{Color.RESET}
@@ -2025,12 +2409,16 @@ def menu():
         
         if opcion == '1':
             cprint(f"\n🔍 {t('procesando')}", 'cyan', bold=True)
+            
+            # Verificar fuentes
             verificador = VerificadorFuentes()
             fuentes_global = verificador.verificar_todas(fuentes_global)
+            
+            # Extraer noticias (guarda automáticamente después de cada fuente)
             extractor = ExtractorNoticias(fuentes_global)
             nuevas = extractor.extraer_todas(paginas=PAGINAS_BUSQUEDA)
-            agregadas = gestor_global.agregar_incidentes(nuevas)
-            cprint(f"\n✅ {agregadas} {t('incidentes')} nuevos registrados", 'green', bold=True)
+            
+            cprint(f"\n✅ {len(nuevas)} {t('incidentes')} nuevos registrados", 'green', bold=True)
             input(f"\n{Color.GRAY}Presiona Enter para continuar...{Color.RESET}")
         
         elif opcion == '2':
@@ -2102,9 +2490,9 @@ def menu():
         
         elif opcion == '5':
             cprint(f"\n🌐 {t('servidor_web')}: http://localhost:{PUERTO}", 'green', bold=True)
-            cprint(f"   📊 Dashboard con gráficos interactivos", 'cyan')
+            cprint(f"   📊 Dashboard con gráficos interactivos y paginación", 'cyan')
             cprint(f"   🔪 {t('presiona_ctrl_c')}", 'gray')
-            app.run(host='127.0.0.1', port=PUERTO, debug=False)
+            app.run(host='127.0.0.1', port=PUERTO, debug=False, use_reloader=False)
         
         elif opcion == '6':
             cprint(f"\n{'='*70}", 'red', bold=True)
@@ -2190,21 +2578,23 @@ def menu():
             time.sleep(1)
 
 # ============================================================================
-# PUNTO DE ENTRADA PRINCIPAL
+# ============================================================================
+# PUNTO DE ENTRADA PRINCIPAL - BANNER Y ARRANQUE
+# ============================================================================
 # ============================================================================
 
 def mostrar_banner_inicial():
-    """Muestra el banner de bienvenida"""
+    """Muestra el banner de bienvenida con diseño completo"""
     print(f"""
 {Color.RED}
 ╔═══════════════════════════════════════════════════════════════════════════════════════════════════╗
 ║                                                                                                   ║
-║   ██╗  ██╗███████╗██╗  ████████╗██╗██████╗     ██╗  ██╗██████╗  █████╗ ██╗  ██╗███████╗███╗   ██╗
-║   ██║ ██╔╝██╔════╝██║  ╚══██╔══╝██║██╔═══╝     ██║ ██╔╝██╔══██╗██╔══██╗██║ ██╔╝██╔════╝████╗  ██║
-║   █████╔╝ █████╗  ██║     ██║   ██║██║         █████╔╝ ██████╔╝███████║█████╔╝ █████╗  ██╔██╗ ██║
-║   ██╔═██╗ ██╔══╝  ██║     ██║   ██║██║         ██╔═██╗ ██╔══██╗██╔══██║██╔═██╗ ██╔══╝  ██║╚██╗██║
-║   ██║  ██╗███████╗███████╗██║   ██║██████╗     ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
-║   ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝   ╚═╝╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
+║   ██╗  ██╗███████╗██╗  ████████╗██╗ ██████╗     ██╗  ██╗██████╗  █████╗ ██╗  ██╗███████╗███╗   ██║
+║   ██║ ██╔╝██╔════╝██║  ╚══██╔══╝██║██╔════╝     ██║ ██╔╝██╔══██╗██╔══██╗██║ ██╔╝██╔════╝████╗  ██║
+║   █████╔╝ █████╗  ██║     ██║   ██║██║          █████╔╝ ██████╔╝███████║█████╔╝ █████╗  ██╔██╗ ██║
+║   ██╔═██╗ ██╔══╝  ██║     ██║   ██║██║          ██╔═██╗ ██╔══██╗██╔══██║██╔═██╗ ██╔══╝  ██║╚██╗██║
+║   ██║  ██╗███████╗███████╗██║   ██║╚██████╗     ██║  ██╗██║  ██║██║  ██║██║  ██╗███████╗██║ ╚████║
+║   ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝   ╚═╝ ╚═════╝     ╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝
 ║                                                                                                   ║
 ║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE PLATFORM                                     ║
 ║                                                                                                   ║
@@ -2212,9 +2602,10 @@ def mostrar_banner_inicial():
 ║                                                                                                   ║
 ║   📊 Real-time monitoring: Drug trafficking · Gang violence · Organized crime                     ║
 ║   🏴 Covers ALL 32 counties including Northern Ireland                                            ║
-║   🔄 150+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system                        ║
+║   🔄 180+ Rotating User-Agents · Auto-URL discovery · Anti-blocking system                        ║
 ║   📈 Interactive charts · Full statistics dashboard · Web interface                               ║
 ║   🔍 Smart retry mechanism · URL cache · Session persistence                                      ║
+║   📄 Pagination in web panel · Save after each source · Duplicate removal                         ║
 ║                                                                                                   ║
 ║   ═══════════════════════════════════════════════════════════════════════════════════════════     ║
 ║                                                                                                   ║
@@ -2227,37 +2618,50 @@ def mostrar_banner_inicial():
 {Color.RESET}""")
 
 if __name__ == '__main__':
-    # Seleccionar idioma primero
+    # ================================================================
+    # Seleccionar idioma
+    # ================================================================
     seleccionar_idioma()
     
+    # ================================================================
     # Mostrar banner
+    # ================================================================
     mostrar_banner_inicial()
     
+    # ================================================================
     # Inicializar gestor y fuentes
+    # ================================================================
     gestor_global = GestorDatos()
     fuentes_global = FUENTES_BASE.copy()
     
+    # ================================================================
     # Mostrar estadísticas iniciales
+    # ================================================================
     stats = gestor_global.estadisticas()
     cprint(f"\n{Color.GREEN}📊 Base de datos: {stats['total']} incidentes almacenados{Color.RESET}")
     cprint(f"{Color.YELLOW}⏳ Última actualización: {gestor_global.datos.get('ultima_actualizacion', 'Nunca')}{Color.RESET}")
     cprint(f"{Color.CYAN}📰 Fuentes configuradas: {len(fuentes_global)} periódicos irlandeses{Color.RESET}")
+    cprint(f"{Color.MAGENTA}🔧 Auto-discovery activado | 180+ User-Agents | Guardado después de CADA fuente{Color.RESET}")
     
+    # ================================================================
     # Preguntar modo de ejecución
-    print(f"\n{Color.CYAN}┌{'─' * 40}┐{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 16}{Color.CYAN}│{Color.RESET}")
-    print(f"{Color.CYAN}├{'─' * 40}┤{Color.RESET}")
+    # ================================================================
+    print(f"\n{Color.CYAN}┌{'─' * 50}┐{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 25}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}├{'─' * 50}┤{Color.RESET}")
     print(f"{Color.CYAN}│{Color.GREEN}  [1] Modo Terminal (recomendado){' ' * 7}{Color.CYAN}│{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard gráficos){' ' * 5}{Color.CYAN}│{Color.RESET}")
-    print(f"{Color.CYAN}└{'─' * 40}┘{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard con gráficos){' ' * 5}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}└{'─' * 50}┘{Color.RESET}")
     
     modo = input(f"\n{Color.CYAN}➤ {Color.YELLOW}Elige: {Color.RESET}")
     
     if modo == '2':
         cprint(f"\n🌐 {t('servidor_web')}: http://localhost:{PUERTO}", 'green', bold=True)
         cprint(f"   📊 Dashboard con gráficos: Barras, Dona, Línea y Ranking", 'cyan')
+        cprint(f"   📄 Paginación: {ITEMS_POR_PAGINA} incidentes por página", 'cyan')
         cprint(f"   🔪 Auto-discovery activado para URLs caídas", 'cyan')
+        cprint(f"   💾 Guardado automático después de CADA fuente", 'green')
         cprint(f"   {Color.GRAY}Presiona Ctrl+C para volver al menú{Color.RESET}")
-        app.run(host='127.0.0.1', port=PUERTO, debug=False)
+        app.run(host='127.0.0.1', port=PUERTO, debug=False, use_reloader=False)
     else:
         menu()
