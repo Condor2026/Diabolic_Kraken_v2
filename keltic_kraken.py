@@ -50,7 +50,7 @@ def mostrar_banner_idioma():
     print(f"""
 {Color.CYAN}╔════════════════════════════════════════════════════════════════════╗
 ║                                                                    ║
-║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE              ║
+║   🔪 KELTIC KRAKEN v{VERSION} - IRELAND CRIME INTELLIGENCE               ║
 ║                                                                    ║
 ║   "Vigilamos para proteger, no para señalar. Datos públicos,       ║
 ║    ética inquebrantable, transparencia absoluta."                  ║
@@ -2269,8 +2269,8 @@ if __name__ == '__main__':
     print(f"\n{Color.CYAN}┌{'─' * 40}┐{Color.RESET}")
     print(f"{Color.CYAN}│{Color.WHITE}  ¿Cómo deseas ejecutar?{' ' * 16}{Color.CYAN}│{Color.RESET}")
     print(f"{Color.CYAN}├{'─' * 40}┤{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.GREEN}  [1] Modo Terminal (recomendado){' ' * 9}{Color.CYAN}│{Color.RESET}")
-    print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard gráficos){' ' * 6}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.GREEN}  [1] Modo Terminal (recomendado){' ' * 8}{Color.CYAN}│{Color.RESET}")
+    print(f"{Color.CYAN}│{Color.GREEN}  [2] Modo Web (dashboard gráficos){' ' * 7}{Color.CYAN}│{Color.RESET}")
     print(f"{Color.CYAN}└{'─' * 40}┘{Color.RESET}")
     
     modo = input(f"\n{Color.CYAN}➤ {Color.YELLOW}Elige: {Color.RESET}")
