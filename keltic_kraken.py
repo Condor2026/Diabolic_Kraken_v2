@@ -88,7 +88,7 @@ def seleccionar_idioma():
 
 TEXTOS = {
     'es': {
-        'app_name': 'KELTIC KRAKEN v3.0',
+        'app_name': '🔪 KELTIC KRAKEN v3.0',
         'welcome_title': 'PLATAFORMA DE INTELIGENCIA CRIMINAL DE IRLANDA',
         'elegir_idioma': 'Seleccione idioma: 1. Español  2. English',
         'menu_title': 'MENÚ PRINCIPAL',
@@ -125,7 +125,7 @@ TEXTOS = {
         'procesando': 'Procesando...'
     },
     'en': {
-        'app_name': 'KELTIC KRAKEN v3.0',
+        'app_name': '🔪KELTIC KRAKEN v3.0',
         'welcome_title': 'IRELAND CRIMINAL INTELLIGENCE PLATFORM',
         'elegir_idioma': 'Select language: 1. Spanish  2. English',
         'menu_title': 'MAIN MENU',
