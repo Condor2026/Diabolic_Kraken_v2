@@ -834,14 +834,14 @@ FUENTES_BASE = [
     # ========================================================================
     # === MONAGHAN REGION - REGIÓN DE MONAGHAN ===
     # ========================================================================
-    {'nombre': 'Monaghan Live', 'url': 'https://monaghanlive.ie/category/crime/', 'base': 'https://monaghanlive.ie', 'condado': 'Monaghan', 'categoria': 'local'},
+    #{'nombre': 'Monaghan Live', 'url': 'https://monaghanlive.ie/category/crime/', 'base': 'https://monaghanlive.ie', 'condado': 'Monaghan', 'categoria': 'local'},
     # {'nombre': 'Northern Standard', 'url': 'https://northernstandard.ie/category/crime/', 'base': 'https://northernstandard.ie', 'condado': 'Monaghan', 'categoria': 'local'},  # Fuente rota - pendiente revisión
     
     # ========================================================================
     # === ROSCOMMON REGION - REGIÓN DE ROSCOMMON ===
     # ========================================================================
     {'nombre': 'Roscommon Herald', 'url': 'https://www.roscommonherald.ie/news/crime/', 'base': 'https://www.roscommonherald.ie', 'condado': 'Roscommon', 'categoria': 'local'},
-    {'nombre': 'Roscommon People', 'url': 'https://roscommonpeople.ie/category/crime/', 'base': 'https://roscommonpeople.ie', 'condado': 'Roscommon', 'categoria': 'local'},
+    #{'nombre': 'Roscommon People', 'url': 'https://roscommonpeople.ie/category/crime/', 'base': 'https://roscommonpeople.ie', 'condado': 'Roscommon', 'categoria': 'local'},
     
     # ========================================================================
     # === WICKLOW REGION - REGIÓN DE WICKLOW ===
@@ -853,13 +853,13 @@ FUENTES_BASE = [
     # === CARLOW REGION - REGIÓN DE CARLOW ===
     # ========================================================================
     {'nombre': 'Carlow Live', 'url': 'https://carlowlive.ie/category/crime/', 'base': 'https://carlowlive.ie', 'condado': 'Carlow', 'categoria': 'local'},
-    {'nombre': 'Carlow Nationalist', 'url': 'https://carlownationalist.ie/category/crime/', 'base': 'https://carlownationalist.ie', 'condado': 'Carlow', 'categoria': 'local'},
+    #{'nombre': 'Carlow Nationalist', 'url': 'https://carlownationalist.ie/category/crime/', 'base': 'https://carlownationalist.ie', 'condado': 'Carlow', 'categoria': 'local'},
     
     # ========================================================================
     # === MEATH REGION - REGIÓN DE MEATH ===
     # ========================================================================
     {'nombre': 'Meath Chronicle', 'url': 'https://www.meathchronicle.ie/news/crime/', 'base': 'https://www.meathchronicle.ie', 'condado': 'Meath', 'categoria': 'local'},
-    {'nombre': 'Meath Live', 'url': 'https://meathlive.ie/category/crime/', 'base': 'https://meathlive.ie', 'condado': 'Meath', 'categoria': 'local'},
+    #{'nombre': 'Meath Live', 'url': 'https://meathlive.ie/category/crime/', 'base': 'https://meathlive.ie', 'condado': 'Meath', 'categoria': 'local'},
     
     # ========================================================================
     # === LONGFORD REGION - REGIÓN DE LONGFORD ===
@@ -900,7 +900,7 @@ FUENTES_BASE = [
     # ========================================================================
     # === TYRONE - REGIÓN DE TYRONE ===
     # ========================================================================
-    {'nombre': 'Tyrone Times', 'url': 'https://www.tyronetimes.co.uk/news/crime', 'base': 'https://www.tyronetimes.co.uk', 'condado': 'Tyrone', 'categoria': 'ni'},
+    #{'nombre': 'Tyrone Times', 'url': 'https://www.tyronetimes.co.uk/news/crime', 'base': 'https://www.tyronetimes.co.uk', 'condado': 'Tyrone', 'categoria': 'ni'},
     # {'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},  # Fuente rota - pendiente revisión
     
     # ========================================================================
