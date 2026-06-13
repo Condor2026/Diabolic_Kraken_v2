@@ -607,15 +607,10 @@ FUENTES_BASE = [
     # === CORK REGION ===
     {'nombre': 'Cork Beo', 'url': 'https://www.corkbeo.ie/news/cork-crime/', 'base': 'https://www.corkbeo.ie', 'condado': 'Cork', 'categoria': 'local'},
     {'nombre': 'Cork Independent', 'url': 'https://corkindependent.com/category/crime/', 'base': 'https://corkindependent.com', 'condado': 'Cork', 'categoria': 'local'},
-    {'nombre': 'Cork News', 'url': 'https://www.corknews.ie/crime/', 'base': 'https://www.corknews.ie', 'condado': 'Cork', 'categoria': 'local'},
-    {'nombre': 'Cork Safety Alert', 'url': 'https://corksafetyalert.com/category/crime/', 'base': 'https://corksafetyalert.com', 'condado': 'Cork', 'categoria': 'local'},
     
     # === GALWAY REGION ===
-    {'nombre': 'Galway Beo', 'url': 'https://www.galwaybeo.ie/news/galway-crime/', 'base': 'https://www.galwaybeo.ie', 'condado': 'Galway', 'categoria': 'local'},
-    {'nombre': 'Galway Advertiser', 'url': 'https://www.galwayadvertiser.ie/crime/', 'base': 'https://www.galwayadvertiser.ie', 'condado': 'Galway', 'categoria': 'local'},
     {'nombre': 'Galway Daily', 'url': 'https://galwaydaily.com/category/crime/', 'base': 'https://galwaydaily.com', 'condado': 'Galway', 'categoria': 'local'},
     {'nombre': 'Connacht Tribune', 'url': 'https://www.connachttribune.ie/category/crime/', 'base': 'https://www.connachttribune.ie', 'condado': 'Galway', 'categoria': 'local'},
-    {'nombre': 'Galway Bay FM', 'url': 'https://galwaybayfm.ie/news/crime/', 'base': 'https://galwaybayfm.ie', 'condado': 'Galway', 'categoria': 'local'},
     
     # === LIMERICK REGION ===
     {'nombre': 'Limerick Leader', 'url': 'https://www.limerickleader.ie/news/crime/', 'base': 'https://www.limerickleader.ie', 'condado': 'Limerick', 'categoria': 'local'},
@@ -628,11 +623,9 @@ FUENTES_BASE = [
     
     # === KERRY REGION ===
     {'nombre': 'Kerryman', 'url': 'https://www.kerryman.ie/news/crime/', 'base': 'https://www.kerryman.ie', 'condado': 'Kerry', 'categoria': 'local'},
-    {'nombre': "Kerry's Eye", 'url': 'https://www.kerryseye.com/crime/', 'base': 'https://www.kerryseye.com', 'condado': 'Kerry', 'categoria': 'local'},
     {'nombre': 'Radio Kerry', 'url': 'https://www.radiokerry.ie/news/crime/', 'base': 'https://www.radiokerry.ie', 'condado': 'Kerry', 'categoria': 'local'},
     
     # === CLARE REGION ===
-    {'nombre': 'Clare Champion', 'url': 'https://www.clarechampion.ie/category/crime/', 'base': 'https://www.clarechampion.ie', 'condado': 'Clare', 'categoria': 'local'},
     {'nombre': 'Clare Echo', 'url': 'https://www.clareecho.ie/category/crime/', 'base': 'https://www.clareecho.ie', 'condado': 'Clare', 'categoria': 'local'},
     {'nombre': 'Clare FM', 'url': 'https://www.clare.fm/news/crime/', 'base': 'https://www.clare.fm', 'condado': 'Clare', 'categoria': 'local'},
     
@@ -643,18 +636,14 @@ FUENTES_BASE = [
     
     # === MAYO REGION ===
     {'nombre': 'Mayo News', 'url': 'https://www.mayonews.ie/category/crime', 'base': 'https://www.mayonews.ie', 'condado': 'Mayo', 'categoria': 'local'},
-    {'nombre': 'Connaught Telegraph', 'url': 'https://www.connaughttelegraph.ie/category/crime/', 'base': 'https://www.connaughttelegraph.ie', 'condado': 'Mayo', 'categoria': 'local'},
     {'nombre': 'Midwest Radio', 'url': 'https://www.midwestradio.ie/news/crime/', 'base': 'https://www.midwestradio.ie', 'condado': 'Mayo', 'categoria': 'local'},
     
     # === WEXFORD REGION ===
     {'nombre': 'Wexford People', 'url': 'https://www.wexfordpeople.ie/news/crime/', 'base': 'https://www.wexfordpeople.ie', 'condado': 'Wexford', 'categoria': 'local'},
     {'nombre': 'Wexford Echo', 'url': 'https://wexfordecho.ie/category/crime/', 'base': 'https://wexfordecho.ie', 'condado': 'Wexford', 'categoria': 'local'},
-    {'nombre': 'South East Radio', 'url': 'https://southeastradio.ie/news/crime/', 'base': 'https://southeastradio.ie', 'condado': 'Wexford', 'categoria': 'local'},
     
     # === KILDARE REGION ===
     {'nombre': 'Kildare Now', 'url': 'https://kildarenow.com/crime', 'base': 'https://kildarenow.com', 'condado': 'Kildare', 'categoria': 'local'},
-    {'nombre': 'Kildare Post', 'url': 'https://kildarepost.ie/category/crime/', 'base': 'https://kildarepost.ie', 'condado': 'Kildare', 'categoria': 'local'},
-    {'nombre': 'KFM Radio', 'url': 'https://kfmradio.com/news/crime/', 'base': 'https://kfmradio.com', 'condado': 'Kildare', 'categoria': 'local'},
     
     # === TIPPERARY REGION ===
     {'nombre': 'Tipperary Live', 'url': 'https://www.tipperarylive.ie/news/crime/', 'base': 'https://www.tipperarylive.ie', 'condado': 'Tipperary', 'categoria': 'local'},
@@ -664,11 +653,9 @@ FUENTES_BASE = [
     # === LOUTH REGION ===
     {'nombre': 'Louth Live', 'url': 'https://www.louthlive.ie/news/crime/', 'base': 'https://www.louthlive.ie', 'condado': 'Louth', 'categoria': 'local'},
     {'nombre': 'Drogheda Independent', 'url': 'https://www.droghedaindependent.ie/news/crime/', 'base': 'https://www.droghedaindependent.ie', 'condado': 'Louth', 'categoria': 'local'},
-    {'nombre': 'LMFM', 'url': 'https://www.lmfm.ie/news/crime/', 'base': 'https://www.lmfm.ie', 'condado': 'Louth', 'categoria': 'local'},
     
     # === SLIGO REGION ===
     {'nombre': 'Sligo Champion', 'url': 'https://www.sligochampion.ie/news/crime/', 'base': 'https://www.sligochampion.ie', 'condado': 'Sligo', 'categoria': 'local'},
-    {'nombre': 'Sligo Today', 'url': 'https://sligotoday.ie/category/crime/', 'base': 'https://sligotoday.ie', 'condado': 'Sligo', 'categoria': 'local'},
     {'nombre': 'Ocean FM', 'url': 'https://www.oceanfm.ie/news/crime/', 'base': 'https://www.oceanfm.ie', 'condado': 'Sligo', 'categoria': 'local'},
     
     # === LAOIS REGION ===
@@ -680,11 +667,9 @@ FUENTES_BASE = [
     {'nombre': 'Offaly Express', 'url': 'https://www.offalyexpress.ie/news/crime/', 'base': 'https://www.offalyexpress.ie', 'condado': 'Offaly', 'categoria': 'local'},
     
     # === CAVAN REGION ===
-    {'nombre': 'Cavan Echo', 'url': 'https://www.cavanecho.ie/category/crime/', 'base': 'https://www.cavanecho.ie', 'condado': 'Cavan', 'categoria': 'local'},
     {'nombre': 'Northern Sound', 'url': 'https://www.northernsound.ie/news/crime/', 'base': 'https://www.northernsound.ie', 'condado': 'Cavan', 'categoria': 'local'},
     
     # === MONAGHAN REGION ===
-    {'nombre': 'Monaghan Live', 'url': 'https://monaghanlive.ie/category/crime/', 'base': 'https://monaghanlive.ie', 'condado': 'Monaghan', 'categoria': 'local'},
     {'nombre': 'Northern Standard', 'url': 'https://northernstandard.ie/category/crime/', 'base': 'https://northernstandard.ie', 'condado': 'Monaghan', 'categoria': 'local'},
     
     # === ROSCOMMON REGION ===
@@ -697,11 +682,9 @@ FUENTES_BASE = [
     
     # === CARLOW REGION ===
     {'nombre': 'Carlow Live', 'url': 'https://carlowlive.ie/category/crime/', 'base': 'https://carlowlive.ie', 'condado': 'Carlow', 'categoria': 'local'},
-    {'nombre': 'Carlow Nationalist', 'url': 'https://carlownationalist.ie/category/crime/', 'base': 'https://carlownationalist.ie', 'condado': 'Carlow', 'categoria': 'local'},
     
     # === MEATH REGION ===
     {'nombre': 'Meath Chronicle', 'url': 'https://www.meathchronicle.ie/news/crime/', 'base': 'https://www.meathchronicle.ie', 'condado': 'Meath', 'categoria': 'local'},
-    {'nombre': 'Meath Live', 'url': 'https://meathlive.ie/category/crime/', 'base': 'https://meathlive.ie', 'condado': 'Meath', 'categoria': 'local'},
     
     # === LONGFORD REGION ===
     {'nombre': 'Longford Leader', 'url': 'https://www.longfordleader.ie/news/crime/', 'base': 'https://www.longfordleader.ie', 'condado': 'Longford', 'categoria': 'local'},
@@ -726,7 +709,6 @@ FUENTES_BASE = [
     {'nombre': 'Newry Reporter', 'url': 'https://www.newryreporter.com/news/crime/', 'base': 'https://www.newryreporter.com', 'condado': 'Down', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - TYRONE ===
-    {'nombre': 'Tyrone Times', 'url': 'https://www.tyronetimes.co.uk/news/crime', 'base': 'https://www.tyronetimes.co.uk', 'condado': 'Tyrone', 'categoria': 'ni'},
     {'nombre': 'Ulster Herald', 'url': 'https://ulsterherald.com/category/crime/', 'base': 'https://ulsterherald.com', 'condado': 'Tyrone', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - ARMAGH ===
@@ -734,7 +716,6 @@ FUENTES_BASE = [
     {'nombre': 'Lurgan Mail', 'url': 'https://www.lurganmail.co.uk/news/crime', 'base': 'https://www.lurganmail.co.uk', 'condado': 'Armagh', 'categoria': 'ni'},
     
     # === NORTHERN IRELAND - FERMANAGH ===
-    {'nombre': 'Fermanagh Herald', 'url': 'https://www.fermanaghherald.com/category/crime/', 'base': 'https://www.fermanaghherald.com', 'condado': 'Fermanagh', 'categoria': 'ni'},
     {'nombre': 'Impartial Reporter', 'url': 'https://www.impartialreporter.com/news/crime/', 'base': 'https://www.impartialreporter.com', 'condado': 'Fermanagh', 'categoria': 'ni'},
 ]
 
