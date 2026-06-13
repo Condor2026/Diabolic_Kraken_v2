@@ -804,13 +804,13 @@ FUENTES_BASE = [
     # ========================================================================
     {'nombre': 'Louth Live', 'url': 'https://www.louthlive.ie/news/crime/', 'base': 'https://www.louthlive.ie', 'condado': 'Louth', 'categoria': 'local'},
     # {'nombre': 'Drogheda Independent', 'url': 'https://www.droghedaindependent.ie/news/crime/', 'base': 'https://www.droghedaindependent.ie', 'condado': 'Louth', 'categoria': 'local'},  # Fuente rota - pendiente revisión
-    {'nombre': 'LMFM', 'url': 'https://www.lmfm.ie/news/crime/', 'base': 'https://www.lmfm.ie', 'condado': 'Louth', 'categoria': 'local'},
+    #{'nombre': 'LMFM', 'url': 'https://www.lmfm.ie/news/crime/', 'base': 'https://www.lmfm.ie', 'condado': 'Louth', 'categoria': 'local'},
     
     # ========================================================================
     # === SLIGO REGION - REGIÓN DE SLIGO ===
     # ========================================================================
     # {'nombre': 'Sligo Champion', 'url': 'https://www.sligochampion.ie/news/crime/', 'base': 'https://www.sligochampion.ie', 'condado': 'Sligo', 'categoria': 'local'},  # Fuente rota - pendiente revisión
-    {'nombre': 'Sligo Today', 'url': 'https://sligotoday.ie/category/crime/', 'base': 'https://sligotoday.ie', 'condado': 'Sligo', 'categoria': 'local'},
+    #{'nombre': 'Sligo Today', 'url': 'https://sligotoday.ie/category/crime/', 'base': 'https://sligotoday.ie', 'condado': 'Sligo', 'categoria': 'local'},
     {'nombre': 'Ocean FM', 'url': 'https://www.oceanfm.ie/news/crime/', 'base': 'https://www.oceanfm.ie', 'condado': 'Sligo', 'categoria': 'local'},
     
     # ========================================================================
@@ -828,7 +828,7 @@ FUENTES_BASE = [
     # ========================================================================
     # === CAVAN REGION - REGIÓN DE CAVAN ===
     # ========================================================================
-    {'nombre': 'Cavan Echo', 'url': 'https://www.cavanecho.ie/category/crime/', 'base': 'https://www.cavanecho.ie', 'condado': 'Cavan', 'categoria': 'local'},
+    #{'nombre': 'Cavan Echo', 'url': 'https://www.cavanecho.ie/category/crime/', 'base': 'https://www.cavanecho.ie', 'condado': 'Cavan', 'categoria': 'local'},
     {'nombre': 'Northern Sound', 'url': 'https://www.northernsound.ie/news/crime/', 'base': 'https://www.northernsound.ie', 'condado': 'Cavan', 'categoria': 'local'},
     
     # ========================================================================
